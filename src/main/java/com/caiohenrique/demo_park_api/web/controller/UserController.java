@@ -6,6 +6,7 @@ import com.caiohenrique.demo_park_api.web.dto.UserCreateDto;
 import com.caiohenrique.demo_park_api.web.dto.UserResponseDto;
 import com.caiohenrique.demo_park_api.web.dto.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +27,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById (@PathVariable Long id) {
+    public ResponseEntity<UserResponseDto> findById (@PathVariable Long id) {
        User user = userService.findById(id);
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok().body(UserMapper.toResponseDto(user));
     }
 
     @GetMapping
