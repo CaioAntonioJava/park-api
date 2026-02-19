@@ -2,9 +2,9 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.User;
 import com.caiohenrique.demo_park_api.service.UserService;
-import com.caiohenrique.demo_park_api.web.dto.UserCreateDto;
+import com.caiohenrique.demo_park_api.web.dto.UserCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserChangePasswordDTO;
-import com.caiohenrique.demo_park_api.web.dto.UserResponseDto;
+import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,13 +21,13 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> create (@RequestBody UserCreateDto createDto) {
+    public ResponseEntity<UserResponseDTO> create (@RequestBody UserCreateDTO createDto) {
         User user = userService.save(UserMapper.toUser(createDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toResponseDto(user));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> findById (@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> findById (@PathVariable Long id) {
        User user = userService.findById(id);
         return ResponseEntity.ok().body(UserMapper.toResponseDto(user));
     }
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponseDto> updatePassword (@PathVariable Long id, @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
+    public ResponseEntity<UserResponseDTO> updatePassword (@PathVariable Long id, @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
 
         User user =  userService.updatePassword(id, userChangePasswordDTO.getCurrentPassword(), userChangePasswordDTO.getNewPassword(), userChangePasswordDTO.getConfirmPassword());
 
