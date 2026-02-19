@@ -7,6 +7,9 @@ import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UserMapper {
 
     public static User toUser (UserCreateDTO createDto) {
@@ -26,5 +29,9 @@ public class UserMapper {
         ModelMapper mapper = new ModelMapper();
         mapper.addMappings(props); // Quando o ModelMapper fizer a conversão ele terá de usar o valor da variável 'role'
         return mapper.map(user, UserResponseDTO.class);
+    }
+
+    public static List<UserResponseDTO> toListDto (List<User> users) {
+        return users.stream().map(user -> toResponseDto(user)).collect(Collectors.toList());
     }
 }
