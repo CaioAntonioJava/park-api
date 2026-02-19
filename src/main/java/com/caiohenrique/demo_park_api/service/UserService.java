@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService  {
@@ -25,5 +27,18 @@ public class UserService  {
                         """, id))
         );
         return user;
+    }
+
+    @Transactional
+    public void updatePassword (Long id, String password) {
+        User user = findById(id);
+        user.setPassword(password);
+
+        userRepository.save(user);
+    }
+
+    @ReadOnlyProperty
+    public List<User> findAll () {
+        return userRepository.findAll();
     }
 }
