@@ -31,11 +31,22 @@ public class UserService  {
     }
 
     @Transactional
-    public void updatePassword (Long id, String password) {
-        User user = findById(id);
-        user.setPassword(password);
+    public User updatePassword (Long id, String currentPassword, String newPassword, String confirmPassword  ) {
 
+        if (!newPassword.equals(confirmPassword)) {
+            throw new RuntimeException("Os campos nova senha e confirmação de senha devem ser idênticos.");
+        }
+
+        User user = findById(id);
+
+        if (!user.getPassword().equals(currentPassword)) {
+            throw new RuntimeException("A senha atual é inválida.");
+        }
+
+        user.setPassword(newPassword);
         userRepository.save(user);
+
+        return user;
     }
 
     @ReadOnlyProperty

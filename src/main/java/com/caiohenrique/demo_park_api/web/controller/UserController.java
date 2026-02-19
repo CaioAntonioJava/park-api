@@ -3,10 +3,10 @@ package com.caiohenrique.demo_park_api.web.controller;
 import com.caiohenrique.demo_park_api.entity.User;
 import com.caiohenrique.demo_park_api.service.UserService;
 import com.caiohenrique.demo_park_api.web.dto.UserCreateDto;
+import com.caiohenrique.demo_park_api.web.dto.UserChangePasswordDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserResponseDto;
 import com.caiohenrique.demo_park_api.web.dto.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +39,10 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePassword (@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<UserResponseDto> updatePassword (@PathVariable Long id, @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
 
-        userService.updatePassword(id, user.getPassword());
+        User user =  userService.updatePassword(id, userChangePasswordDTO.getCurrentPassword(), userChangePasswordDTO.getNewPassword(), userChangePasswordDTO.getConfirmPassword());
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(UserMapper.toResponseDto(user));
     }
 }
