@@ -2,6 +2,9 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.User;
 import com.caiohenrique.demo_park_api.service.UserService;
+import com.caiohenrique.demo_park_api.web.dto.UserCreateDto;
+import com.caiohenrique.demo_park_api.web.dto.UserResponseDto;
+import com.caiohenrique.demo_park_api.web.dto.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +20,9 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<User> create (@RequestBody User user) {
-        userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<UserResponseDto> create (@RequestBody UserCreateDto createDto) {
+        User user = userService.save(UserMapper.toUser(createDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toResponseDto(user));
     }
 
     @GetMapping("/{id}")
