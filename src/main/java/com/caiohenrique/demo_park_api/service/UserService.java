@@ -2,6 +2,7 @@ package com.caiohenrique.demo_park_api.service;
 
 import com.caiohenrique.demo_park_api.entity.User;
 import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
+import com.caiohenrique.demo_park_api.exception.PasswordInvalidException;
 import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException;
 import com.caiohenrique.demo_park_api.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -43,13 +44,13 @@ public class UserService  {
     public User updatePassword (Long id, String currentPassword, String newPassword, String confirmPassword  ) {
 
         if (!newPassword.equals(confirmPassword)) {
-            throw new RuntimeException("Os campos nova senha e confirmação de senha devem ser idênticos.");
+            throw new PasswordInvalidException("Os campos nova senha e confirmação de senha devem ser idênticos.");
         }
 
         User user = findById(id);
 
         if (!user.getPassword().equals(currentPassword)) {
-            throw new RuntimeException("A senha atual é inválida.");
+            throw new PasswordInvalidException("A senha atual é inválida.");
         }
 
         user.setPassword(newPassword);

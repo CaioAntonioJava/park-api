@@ -1,6 +1,7 @@
 package com.caiohenrique.demo_park_api.web.exception;
 
 import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
+import com.caiohenrique.demo_park_api.exception.PasswordInvalidException;
 import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -49,5 +50,16 @@ public class ApiExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, exception.getMessage()));
+    }
+
+    @ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ErrorMessage> passwordInvalidException (RuntimeException exception,
+                                                                 HttpServletRequest request) {
+
+        log.error("Api Error - ", exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, exception.getMessage()));
     }
 }
