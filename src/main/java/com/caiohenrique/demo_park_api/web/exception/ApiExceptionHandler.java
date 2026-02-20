@@ -24,9 +24,9 @@ public class ApiExceptionHandler {
 
         log.error("Api Error - ", exception);
         return ResponseEntity
-                .status(HttpStatus.UNPROCESSABLE_CONTENT)
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_CONTENT, "Erro de validação nos dados informados.", result));
+                .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Erro de validação nos dados informados.", result));
 
     }
 
