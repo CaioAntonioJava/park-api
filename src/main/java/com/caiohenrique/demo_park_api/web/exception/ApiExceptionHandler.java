@@ -29,7 +29,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(UserNameUniqueViolationException.class)
-    public ResponseEntity<ErrorMessage> userNameUniqueViolationException (RuntimeException exception,
+    public ResponseEntity<ErrorMessage> uniqueViolationException (RuntimeException exception,
                                                                          HttpServletRequest request) {
 
         log.error("Api Error - ", exception);
