@@ -1,6 +1,7 @@
 package com.caiohenrique.demo_park_api.service;
 
 import com.caiohenrique.demo_park_api.entity.User;
+import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException;
 import com.caiohenrique.demo_park_api.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -31,8 +32,8 @@ public class UserService  {
     @ReadOnlyProperty
     public User findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException(String.format("""
-                    Usuário ID: %d não encontrado.    
+                () -> new EntityNotFoundException(String.format("""
+                    Usuário ID { %d } não encontrado.    
                         """, id))
         );
         return user;
