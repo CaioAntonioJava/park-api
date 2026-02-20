@@ -1,5 +1,6 @@
 package com.caiohenrique.demo_park_api.web.exception;
 
+import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,5 +26,16 @@ public class ApiExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_CONTENT, "Erro de validação nos dados informados.", result));
 
+    }
+
+    @ExceptionHandler(UserNameUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> userNameUniqueViolationException (RuntimeException exception,
+                                                                         HttpServletRequest request) {
+
+        log.error("Api Error - ", exception);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT, exception.getMessage()));
     }
 }
