@@ -66,6 +66,19 @@ public class UserController {
         return ResponseEntity.ok().body(UserMapper.toListDto(users));
     }
 
+
+    @Operation(
+            summary = "Atualizar senha", description = "Recurso para atualizar senha de um usuário cadastrado",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso", content = @Content(mediaType = "application/json",
+                            schema = @Schema())),
+                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "400", description = "Erro de validação: " +
+                            "a senha atual não corresponde ou a nova senha e a confirmação não correspondem", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updatePassword (@PathVariable Long id, @Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
         User user =  userService.updatePassword(
