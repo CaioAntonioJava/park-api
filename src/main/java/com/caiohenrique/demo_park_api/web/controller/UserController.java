@@ -40,7 +40,7 @@ public class UserController {
             }
     )
     @PostMapping
-    public ResponseEntity<UserResponseDTO> create (@Valid @RequestBody UserCreateDTO createDto) {
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserCreateDTO createDto) {
         User user = userService.save(UserMapper.toUser(createDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toResponseDto(user));
     }
@@ -55,8 +55,8 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> findById (@PathVariable Long id) {
-       User user = userService.findById(id);
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+        User user = userService.findById(id);
         return ResponseEntity.ok().body(UserMapper.toResponseDto(user));
     }
 
@@ -68,7 +68,7 @@ public class UserController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> findAll () {
+    public ResponseEntity<List<UserResponseDTO>> findAll() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok().body(UserMapper.toListDto(users));
     }
@@ -87,8 +87,8 @@ public class UserController {
             }
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePassword (@PathVariable Long id, @Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
-        User user =  userService.updatePassword(
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
+        User user = userService.updatePassword(
                 id, userChangePasswordDTO.getCurrentPassword(), userChangePasswordDTO.getNewPassword(), userChangePasswordDTO.getConfirmPassword()
         );
         return ResponseEntity.noContent().build();
