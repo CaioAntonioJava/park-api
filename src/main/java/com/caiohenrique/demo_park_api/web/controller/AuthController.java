@@ -30,17 +30,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid UserLoginDto dto, HttpServletRequest request) {
-
         try {
-
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
-
             JwtToken token = authService.authenticate(authentication);
-
             return ResponseEntity.ok(token);
-
         } catch (AuthenticationException ex) {
-
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED, "Credenciais inválidas."));
         }
     }
