@@ -64,11 +64,13 @@ public class UserService {
     }
 
 
+// ===== Methods required by Spring Security =====
+
     @ReadOnlyProperty
     public User findByUserName(String username) {
         return userRepository.findByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
-                        Usuário com username: { %s } não encontrado.    
+                        Usuário com username: { %s } não encontrado.
                         """, username)));
     }
 
