@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService  {
+public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
@@ -34,14 +34,14 @@ public class UserService  {
     public User findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
-                    Usuário ID { %d } não encontrado.    
+                        Usuário ID { %d } não encontrado.    
                         """, id))
         );
         return user;
     }
 
     @Transactional
-    public User updatePassword (Long id, String currentPassword, String newPassword, String confirmPassword  ) {
+    public User updatePassword(Long id, String currentPassword, String newPassword, String confirmPassword) {
 
         if (!newPassword.equals(confirmPassword)) {
             throw new PasswordInvalidException("Os campos nova senha e confirmação de senha devem ser idênticos.");
@@ -59,7 +59,21 @@ public class UserService  {
     }
 
     @ReadOnlyProperty
-    public List<User> findAll () {
+    public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+
+    @ReadOnlyProperty
+    public User findByUserName(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException(String.format("""
+                        Usuário com username: { %s } não encontrado.    
+                        """, username)));
+    }
+
+    @ReadOnlyProperty
+    public User.Role findRoleByUsername(String username) {
+        return userRepository.findRoleByUsername(username);
     }
 }
