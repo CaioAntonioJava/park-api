@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,10 +18,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorMessage> accessDeniedException(AccessDeniedException exception,
+                                                              HttpServletRequest request) {
+
+        log.error("Api Error - ", exception);
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.FORBIDDEN, exception.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorMessage> methodArgumentNotValidException (MethodArgumentNotValidException exception,
-                                                                         HttpServletRequest request,
-                                                                         BindingResult result) {
+    public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException exception,
+                                                                        HttpServletRequest request,
+                                                                        BindingResult result) {
 
         log.error("Api Error - ", exception);
         return ResponseEntity
@@ -31,8 +43,8 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(UserNameUniqueViolationException.class)
-    public ResponseEntity<ErrorMessage> uniqueViolationException (RuntimeException exception,
-                                                                         HttpServletRequest request) {
+    public ResponseEntity<ErrorMessage> uniqueViolationException(RuntimeException exception,
+                                                                 HttpServletRequest request) {
 
         log.error("Api Error - ", exception);
         return ResponseEntity
@@ -42,8 +54,8 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorMessage> entityNotFoundException (RuntimeException exception,
-                                                                          HttpServletRequest request) {
+    public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException exception,
+                                                                HttpServletRequest request) {
 
         log.error("Api Error - ", exception);
         return ResponseEntity
@@ -53,7 +65,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(PasswordInvalidException.class)
-    public ResponseEntity<ErrorMessage> passwordInvalidException (RuntimeException exception,
+    public ResponseEntity<ErrorMessage> passwordInvalidException(RuntimeException exception,
                                                                  HttpServletRequest request) {
 
         log.error("Api Error - ", exception);
