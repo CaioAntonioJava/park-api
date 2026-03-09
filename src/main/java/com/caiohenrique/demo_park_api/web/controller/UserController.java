@@ -2,8 +2,8 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.User;
 import com.caiohenrique.demo_park_api.service.UserService;
-import com.caiohenrique.demo_park_api.web.dto.UserCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserChangePasswordDTO;
+import com.caiohenrique.demo_park_api.web.dto.UserCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.UserMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class UserController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') OR (hasRole('CLIENT') AND #id == authentication.principal.id )")
     public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
         User user = userService.findById(id);
         return ResponseEntity.ok().body(UserMapper.toResponseDto(user));
@@ -68,6 +70,7 @@ public class UserController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDTO>> findAll() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok().body(UserMapper.toListDto(users));
@@ -87,6 +90,7 @@ public class UserController {
             }
     )
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT') AND (#id == authentication.principal.id) ")
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
         User user = userService.updatePassword(
                 id, userChangePasswordDTO.getCurrentPassword(), userChangePasswordDTO.getNewPassword(), userChangePasswordDTO.getConfirmPassword()
