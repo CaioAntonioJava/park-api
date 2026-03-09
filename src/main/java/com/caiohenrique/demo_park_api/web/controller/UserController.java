@@ -48,11 +48,13 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Recuperar um usuário pelo id", description = "Recurso para recuperar um usuário pelo id",
+            summary = "Recuperar um usuário pelo id", description = "Requer autenticação via Bearer Token. Acesso permitido apenas para ADMIN e CLIENT.",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserResponseDTO.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
             }
@@ -65,11 +67,13 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Recuperar todos os usuários cadastrados", description = "Recurso para recuperar todos os usuários cadastrados",
+            summary = "Recuperar todos os usuários cadastrados", description = "Requer autenticação via Bearer Token. Acesso permitido apenas para ADMIN.",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponseDTO.class)))
+                            schema = @Schema(implementation = UserResponseDTO.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
     @GetMapping
@@ -81,11 +85,13 @@ public class UserController {
 
 
     @Operation(
-            summary = "Atualizar senha", description = "Recurso para atualizar senha de um usuário cadastrado",
+            summary = "Atualizar senha", description = "Requer autenticação via Bearer Token. Acesso permitido apenas para ADMIN e CLIENT.",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso", content = @Content(mediaType = "application/json",
                             schema = @Schema())),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "400", description = "Erro de validação: " +
