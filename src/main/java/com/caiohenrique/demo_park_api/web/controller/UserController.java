@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,7 @@ public class UserController {
 
     @Operation(
             summary = "Recuperar um usuário pelo id", description = "Recurso para recuperar um usuário pelo id",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserResponseDTO.class))),
@@ -64,6 +66,7 @@ public class UserController {
 
     @Operation(
             summary = "Recuperar todos os usuários cadastrados", description = "Recurso para recuperar todos os usuários cadastrados",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserResponseDTO.class)))
@@ -79,6 +82,7 @@ public class UserController {
 
     @Operation(
             summary = "Atualizar senha", description = "Recurso para atualizar senha de um usuário cadastrado",
+            security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso", content = @Content(mediaType = "application/json",
                             schema = @Schema())),
