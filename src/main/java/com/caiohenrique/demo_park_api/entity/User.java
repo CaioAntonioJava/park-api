@@ -1,14 +1,13 @@
 package com.caiohenrique.demo_park_api.entity;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +15,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User implements Serializable {
+@EntityListeners(AuditingEntityListener.class)
+public class User extends Auditable implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +35,6 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 25)
     private Role role = Role.ROLE_CLIENT;
-
-
-    @Column(name = "created_at")
-    private LocalDateTime createAt;
-    @Column(name = "updated_at")
-    private LocalDateTime updateAt;
-    @Column(name = "created_by")
-    private LocalDateTime createdBy;
-    @Column(name = "updated_by")
-    private LocalDateTime updatedBy;
 
     public enum Role {
         ROLE_ADMIN, ROLE_CLIENT
