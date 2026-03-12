@@ -61,7 +61,7 @@ public class UserController {
     )
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or ( hasRole('CLIENT') and #id == authentication.principal.id )")
-    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> getById(@PathVariable Long id) {
         User user = userService.findById(id);
         return ResponseEntity.ok().body(UserMapper.toResponseDto(user));
     }
@@ -78,7 +78,7 @@ public class UserController {
     )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserResponseDTO>> findAll() {
+    public ResponseEntity<List<UserResponseDTO>> getAll() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok().body(UserMapper.toListDto(users));
     }
