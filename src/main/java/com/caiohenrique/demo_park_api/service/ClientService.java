@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,5 +37,10 @@ public class ClientService {
                         """, id))
         );
         return client;
+    }
+
+    @ReadOnlyProperty
+    public Page<Client> findAll(Pageable pageable) {
+        return clientRepository.findAll(pageable);
     }
 }

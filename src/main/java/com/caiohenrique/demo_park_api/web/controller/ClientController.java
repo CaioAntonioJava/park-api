@@ -9,6 +9,8 @@ import com.caiohenrique.demo_park_api.web.dto.ClientResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ClientMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,8 +47,15 @@ public class ClientController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ClientResponseDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<ClientResponseDTO> getById(@PathVariable Long id) {
         Client client = clientService.findById(id);
         return ResponseEntity.ok().body(ClientMapper.clientResponseDTO(client));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Client>> getAll(Pageable pageable) {
+        Page<Client> clientList = clientService.findAll(pageable);
+        return ResponseEntity.ok().body(clientList);
     }
 }
