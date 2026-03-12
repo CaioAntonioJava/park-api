@@ -15,6 +15,5 @@ public class ClientMapper {
 
     public static ClientResponseDTO clientResponseDTO(Client client) {
         return new ModelMapper().map(client, ClientResponseDTO.class);
-
     }
 }
