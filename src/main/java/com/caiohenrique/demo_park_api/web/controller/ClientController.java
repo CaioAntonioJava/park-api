@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/clients")
@@ -44,5 +41,12 @@ public class ClientController {
         clientService.save(client);
 
         return ResponseEntity.status(201).body(ClientMapper.clientResponseDTO(client));
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ClientResponseDTO> findById(@PathVariable Long id) {
+        Client client = clientService.findById(id);
+        return ResponseEntity.ok().body(ClientMapper.clientResponseDTO(client));
     }
 }
