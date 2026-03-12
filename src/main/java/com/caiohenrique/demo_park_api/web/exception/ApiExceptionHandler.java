@@ -1,5 +1,6 @@
 package com.caiohenrique.demo_park_api.web.exception;
 
+import com.caiohenrique.demo_park_api.exception.CpfUniqueViolationException;
 import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.exception.PasswordInvalidException;
 import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException;
@@ -42,7 +43,7 @@ public class ApiExceptionHandler {
 
     }
 
-    @ExceptionHandler(UserNameUniqueViolationException.class)
+    @ExceptionHandler({UserNameUniqueViolationException.class, CpfUniqueViolationException.class})
     public ResponseEntity<ErrorMessage> uniqueViolationException(RuntimeException exception,
                                                                  HttpServletRequest request) {
 
