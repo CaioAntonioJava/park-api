@@ -58,4 +58,12 @@ public class ClientController {
         Page<Client> clientList = clientService.findAll(pageable);
         return ResponseEntity.ok().body(clientList);
     }
+
+    // ===== Retrieves the currently authenticated user by ID. =====
+    @GetMapping("/details")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<ClientResponseDTO> getClientDetails(@AuthenticationPrincipal JwtUserDetails jwtUserDetails) {
+        Client client = clientService.findByUserId(jwtUserDetails.getId());
+        return ResponseEntity.ok().body(ClientMapper.clientResponseDTO(client));
+    }
 }

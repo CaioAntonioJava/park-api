@@ -43,4 +43,10 @@ public class ClientService {
     public Page<Client> findAll(Pageable pageable) {
         return clientRepository.findAll(pageable);
     }
+    
+    // ===== Retrieves the currently authenticated user by ID. =====
+    @ReadOnlyProperty
+    public Client findByUserId(Long id) {
+        return clientRepository.findByUserId(id);
+    }
 }
