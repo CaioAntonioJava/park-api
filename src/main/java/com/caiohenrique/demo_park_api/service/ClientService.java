@@ -4,6 +4,7 @@ import com.caiohenrique.demo_park_api.entity.Client;
 import com.caiohenrique.demo_park_api.exception.CpfUniqueViolationException;
 import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.repository.ClientRepository;
+import com.caiohenrique.demo_park_api.repository.projection.ClientProjection;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,10 +41,10 @@ public class ClientService {
     }
 
     @ReadOnlyProperty
-    public Page<Client> findAll(Pageable pageable) {
-        return clientRepository.findAll(pageable);
+    public Page<ClientProjection> findAll(Pageable pageable) {
+        return clientRepository.findAllBy(pageable);
     }
-    
+
     // ===== Retrieves the currently authenticated user by ID. =====
     @ReadOnlyProperty
     public Client findByUserId(Long id) {

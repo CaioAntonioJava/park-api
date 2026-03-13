@@ -2,11 +2,14 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.Client;
 import com.caiohenrique.demo_park_api.jwt.JwtUserDetails;
+import com.caiohenrique.demo_park_api.repository.projection.ClientProjection;
 import com.caiohenrique.demo_park_api.service.ClientService;
 import com.caiohenrique.demo_park_api.service.UserService;
 import com.caiohenrique.demo_park_api.web.dto.ClientCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ClientResponseDTO;
+import com.caiohenrique.demo_park_api.web.dto.PageableDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ClientMapper;
+import com.caiohenrique.demo_park_api.web.dto.mapper.PageableMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,15 +57,15 @@ public class ClientController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<Client>> getAll(Pageable pageable) {
-        Page<Client> clientList = clientService.findAll(pageable);
-        return ResponseEntity.ok().body(clientList);
+    public ResponseEntity<PageableDTO> getAll(Pageable pageable) {
+        Page<ClientProjection> clientList = clientService.findAll(pageable);
+        return ResponseEntity.ok().body(PageableMapper.toPageableDto(clientList));
     }
 
     // ===== Retrieves the currently authenticated user by ID. =====
     @GetMapping("/details")
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<ClientResponseDTO> getClientDetails(@AuthenticationPrincipal JwtUserDetails jwtUserDetails) {
+    public ResponseEntity<ClientResponseDTO> getDetails(@AuthenticationPrincipal JwtUserDetails jwtUserDetails) {
         Client client = clientService.findByUserId(jwtUserDetails.getId());
         return ResponseEntity.ok().body(ClientMapper.clientResponseDTO(client));
     }
