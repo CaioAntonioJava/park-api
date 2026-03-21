@@ -5,13 +5,12 @@ import com.caiohenrique.demo_park_api.exception.CpfUniqueViolationException;
 import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.repository.ClientRepository;
 import com.caiohenrique.demo_park_api.repository.projection.ClientProjection;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class ClientService {
         }
     }
 
-    @ReadOnlyProperty
+    @Transactional(readOnly = true)
     public Client findById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
@@ -40,13 +39,13 @@ public class ClientService {
         return client;
     }
 
-    @ReadOnlyProperty
+    @Transactional(readOnly = true)
     public Page<ClientProjection> findAll(Pageable pageable) {
         return clientRepository.findAllBy(pageable);
     }
 
     // ===== Retrieves the currently authenticated user by ID. =====
-    @ReadOnlyProperty
+    @Transactional(readOnly = true)
     public Client findByUserId(Long id) {
         return clientRepository.findByUserId(id);
     }

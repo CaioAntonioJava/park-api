@@ -5,12 +5,11 @@ import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.exception.PasswordInvalidException;
 import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException;
 import com.caiohenrique.demo_park_api.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class UserService {
         }
     }
 
-    @ReadOnlyProperty
+    @Transactional(readOnly = true)
     public User findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
@@ -61,7 +60,7 @@ public class UserService {
         return user;
     }
 
-    @ReadOnlyProperty
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -69,7 +68,7 @@ public class UserService {
 
 // ===== Methods required by Spring Security =====
 
-    @ReadOnlyProperty
+    @Transactional(readOnly = true)
     public User findByUserName(String username) {
         return userRepository.findByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
@@ -77,7 +76,7 @@ public class UserService {
                         """, username)));
     }
 
-    @ReadOnlyProperty
+    @Transactional(readOnly = true)
     public User.Role findRoleByUsername(String username) {
         return userRepository.findRoleByUsername(username);
     }
