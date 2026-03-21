@@ -26,11 +26,11 @@ public class ParkingSpotService {
     }
 
     @Transactional(readOnly = true)
-    public ParkingSpot findByCode(String code) {
-        return parkingSpotRepository.findByCode(code).orElseThrow(
+    public ParkingSpot findByCode(String spotCode) {
+        return parkingSpotRepository.findBySpotCode(spotCode).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
                         Vaga com código { %s } não foi encontrada.
-                        """, code))
+                        """, spotCode))
         );
     }
 }
