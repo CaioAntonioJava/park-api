@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserLoginDto {
+public class UserLoginDTO {
 
     @Schema(description = "Email do usuário utilizado para login", example = "usuario@email.com")
     @NotBlank

@@ -2,7 +2,7 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.jwt.JwtToken;
 import com.caiohenrique.demo_park_api.service.AuthService;
-import com.caiohenrique.demo_park_api.web.dto.UserLoginDto;
+import com.caiohenrique.demo_park_api.web.dto.UserLoginDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,7 +50,7 @@ public class AuthController {
             }
     )
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid UserLoginDto dto, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody @Valid UserLoginDTO dto, HttpServletRequest request) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
             JwtToken token = authService.authenticate(authentication);
