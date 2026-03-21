@@ -1,9 +1,6 @@
 package com.caiohenrique.demo_park_api.web.exception;
 
-import com.caiohenrique.demo_park_api.exception.CpfUniqueViolationException;
-import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
-import com.caiohenrique.demo_park_api.exception.PasswordInvalidException;
-import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException;
+import com.caiohenrique.demo_park_api.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -43,7 +40,7 @@ public class ApiExceptionHandler {
 
     }
 
-    @ExceptionHandler({UserNameUniqueViolationException.class, CpfUniqueViolationException.class})
+    @ExceptionHandler({UserNameUniqueViolationException.class, CpfUniqueViolationException.class, CodeUniqueViolationException.class})
     public ResponseEntity<ErrorMessage> uniqueViolationException(RuntimeException exception,
                                                                  HttpServletRequest request) {
 
