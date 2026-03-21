@@ -1,5 +1,6 @@
 package com.caiohenrique.demo_park_api.entity;
 
+import com.caiohenrique.demo_park_api.enums.SpotStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,11 +33,7 @@ public class ParkingSpot extends Auditable implements Serializable {
     @Column(name = "spot_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private SpotStatus spotStatus;
-
-    public enum SpotStatus {
-        LIVRE, OCUPADA
-    }
-
+    
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
