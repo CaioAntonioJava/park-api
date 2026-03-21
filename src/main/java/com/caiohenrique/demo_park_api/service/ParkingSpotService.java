@@ -2,11 +2,12 @@ package com.caiohenrique.demo_park_api.service;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSpot;
 import com.caiohenrique.demo_park_api.exception.CodeUniqueViolationException;
+import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.repository.ParkingSpotRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +23,14 @@ public class ParkingSpotService {
                     Vaga com código { %s } já cadastrada.
                     """, parkingSpot.getSpotCode()));
         }
+    }
+
+    @Transactional(readOnly = true)
+    public ParkingSpot findByCode(String code) {
+        return parkingSpotRepository.findByCode(code).orElseThrow(
+                () -> new EntityNotFoundException(String.format("""
+                        Vaga com código { %s } não foi encontrada.
+                        """, code))
+        );
     }
 }
