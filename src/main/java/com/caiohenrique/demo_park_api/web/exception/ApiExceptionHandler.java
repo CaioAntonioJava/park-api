@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -71,5 +72,33 @@ public class ApiExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, exception.getMessage()));
+    }
+
+    /**
+     * Trata erro de JSON inválido, especialmente quando um valor incorreto é enviado para ENUM.
+     * Retorna 400 com o valor recebido e os valores permitidos.
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorMessage> handleInvalidEnum(HttpMessageNotReadableException ex,
+                                                          HttpServletRequest request) {
+
+        log.error("Api Error - ", ex);
+
+        Throwable cause = ex.getCause();
+
+        String message = "Erro na requisição.";
+
+        if (cause instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException formatException
+                && formatException.getTargetType().isEnum()) {
+
+            message = String.format("Valor inválido '%s'. Valores permitidos: %s",
+                    formatException.getValue(),
+                    java.util.Arrays.toString(formatException.getTargetType().getEnumConstants()));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, message));
     }
 }
