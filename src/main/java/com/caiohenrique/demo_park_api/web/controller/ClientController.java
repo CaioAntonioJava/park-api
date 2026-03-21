@@ -38,8 +38,7 @@ public class ClientController {
 
     private final ClientService clientService;
     private final UserService userService;
-
-
+    
     @Operation(
             summary = "Criar um novo cliente", description = "Recurso para criar um novo cliente vinculado a um usuário cadastrado. " +
             "Requisição exige uso de um bearer token. Acesso restrito para CLIENT.",
