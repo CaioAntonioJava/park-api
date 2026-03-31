@@ -29,46 +29,21 @@ public class ParkingSpotController {
 
     @Operation(
             summary = "Criar uma nova vaga",
-            description = "Cria uma nova vaga de estacionamento no sistema." +
-                    "Requer autenticação via Bearer Token e acesso restrito ao perfil ADMIN.",
+            description = "Cria uma nova vaga de estacionamento no sistema. Requer autenticação via Bearer Token. Acesso permitido apenas para ADMIN.",
             security = @SecurityRequirement(name = "security"),
             responses = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "Vaga criada com sucesso.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ParkingSpotResponseDTO.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Requisição inválida. O campo 'status' aceita apenas os valores: [LIVRE, OCUPADA].",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Não autorizado. É necessário estar autenticado para acessar este recurso.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Acesso negado. Usuário não possui permissão para este recurso.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "409",
-                            description = "Conflito: já existe uma vaga cadastrada com os dados informados.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "422",
-                            description = "Dados inválidos: o campo 'spotCode' deve conter exatamente 4 caracteres.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    )
+                    @ApiResponse(responseCode = "201", description = "Vaga criada com sucesso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParkingSpotResponseDTO.class))),
+                    @ApiResponse(responseCode = "400", description = "Requisição inválida. O campo 'status' aceita apenas os valores: [LIVRE, OCUPADA].", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "401", description = "Não autorizado. É necessário estar autenticado para acessar este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado. Usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "409", description = "Conflito: já existe uma vaga cadastrada com os dados informados.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Dados inválidos: o campo 'spotCode' deve conter exatamente 4 caracteres.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
     @PostMapping
@@ -82,48 +57,23 @@ public class ParkingSpotController {
 
     @Operation(
             summary = "Buscar vaga por código",
-            description = "Retorna os dados de uma vaga de estacionamento a partir do seu código. " +
-                    "Requer autenticação via Bearer Token e acesso restrito ao perfil ADMIN.",
+            description = "Retorna os dados de uma vaga de estacionamento a partir do seu código. Requer autenticação via Bearer Token. Acesso permitido apenas para ADMIN.",
             security = @SecurityRequirement(name = "security"),
             parameters = {
-                    @Parameter(
-                            name = "spotCode",
-                            description = "Código único da vaga (deve conter exatamente 4 caracteres). Ex: A123",
-                            example = "A123",
-                            required = true
-                    )
+                    @Parameter(name = "spotCode", description = "Código único da vaga (deve conter exatamente 4 caracteres). Ex: A123",
+                            example = "A123", required = true)
             },
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Vaga encontrada com sucesso.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ParkingSpotResponseDTO.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Requisição inválida. O parâmetro 'spotCode' deve conter exatamente 4 caracteres.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Não autorizado. É necessário estar autenticado para acessar este recurso.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Acesso negado. Usuário não possui permissão para este recurso.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Vaga não encontrada para o código informado.",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ErrorMessage.class))
-                    )
+                    @ApiResponse(responseCode = "200", description = "Vaga encontrada com sucesso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParkingSpotResponseDTO.class))),
+                    @ApiResponse(responseCode = "400", description = "Requisição inválida. O parâmetro 'spotCode' deve conter exatamente 4 caracteres.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "401", description = "Não autorizado. É necessário estar autenticado para acessar este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado. Usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "404", description = "Vaga não encontrada para o código informado.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
     @GetMapping("/{spotCode}")
