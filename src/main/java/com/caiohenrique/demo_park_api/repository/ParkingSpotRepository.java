@@ -1,10 +1,13 @@
 package com.caiohenrique.demo_park_api.repository;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSpot;
+import com.caiohenrique.demo_park_api.enums.SpotStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Long> {
     Optional<ParkingSpot> findBySpotCode(String spotCode);
+
+    Optional<ParkingSpot> findFirstByStatus(SpotStatus LIVRE);
 }

@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.caiohenrique.demo_park_api.enums.SpotStatus.LIVRE;
+
 @Service
 @RequiredArgsConstructor
 public class ParkingSpotService {
@@ -31,6 +33,15 @@ public class ParkingSpotService {
                 () -> new EntityNotFoundException(String.format("""
                         Vaga com código { %s } não foi encontrada.
                         """, spotCode))
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public ParkingSpot findAvailableParkingSpot() {
+        return parkingSpotRepository.findFirstByStatus(LIVRE).orElseThrow(
+                () -> new EntityNotFoundException(String.format("""
+                        Nenhuma vaga livre foi encontrada
+                        """))
         );
     }
 }
