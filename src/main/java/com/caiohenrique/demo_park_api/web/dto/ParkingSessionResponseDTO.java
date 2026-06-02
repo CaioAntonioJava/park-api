@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ParkingSessionResponseDTO {
 
+    /**
+     * DTO responsável por transportar os dados de entrada,
+     * saída, vaga e cobrança de uma sessão de estacionamento.
+     */
+
     private String licensePlate;
 
     private String brand;

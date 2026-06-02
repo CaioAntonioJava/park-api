@@ -16,6 +16,11 @@ import org.hibernate.validator.constraints.br.CPF;
 @AllArgsConstructor
 public class ParkingSessionCreateDTO {
 
+    /**
+     * DTO responsável por transportar os dados do veículo
+     * e do cliente para registrar uma nova sessão de estacionamento.
+     */
+
     @NotBlank(message = "A placa é obrigatória")
     @Size(min = 8, max = 8)
     @Pattern(regexp = "([A-Z]{3}-\\d{4})|([A-Z]{3}\\d[A-Z]\\d{2})", message = "Placa inválida")
