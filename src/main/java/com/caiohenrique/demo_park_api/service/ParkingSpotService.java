@@ -38,7 +38,7 @@ public class ParkingSpotService {
 
     @Transactional(readOnly = true)
     public ParkingSpot findAvailableParkingSpot() {
-        return parkingSpotRepository.findFirstByStatus(LIVRE).orElseThrow(
+        return parkingSpotRepository.findFirstBySpotStatus(LIVRE).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
                         Nenhuma vaga livre foi encontrada
                         """))
