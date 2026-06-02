@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ParkingSessionService {
-    private final ParkingSessionRepository parkingSessionRepository;
 
+    private final ParkingSessionRepository parkingSessionRepository;
 
     /* Responsável por cadastrar uma nova sessão de estacionamento. */
     @Transactional
