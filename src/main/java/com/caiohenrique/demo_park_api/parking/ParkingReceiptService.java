@@ -21,6 +21,6 @@ public class ParkingReceiptService {
 
         String uuidPart = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
-        return "RECIBO-" + receipt + "-" + uuidPart;
+        return "REC-" + receipt + "-" + uuidPart;
     }
 }

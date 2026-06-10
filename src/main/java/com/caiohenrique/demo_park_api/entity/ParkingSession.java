@@ -32,7 +32,7 @@ public class ParkingSession extends Auditable {
 
     /* Dados do recibo */
 
-    @Column(name = "receipt_number", nullable = false, unique = true, length = 15)
+    @Column(name = "receipt_number", nullable = false, unique = true, length = 30)
     private String receiptNumber;
 
     /* Dados do veículo associado à sessão de estacionamento. */
