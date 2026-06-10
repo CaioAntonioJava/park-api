@@ -1,6 +1,7 @@
 package com.caiohenrique.demo_park_api.service;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
+import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.repository.ParkingSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,14 @@ public class ParkingSessionService {
     @Transactional
     public ParkingSession save(ParkingSession parkingSession) {
         return parkingSessionRepository.save(parkingSession);
+    }
+
+    @Transactional(readOnly = true)
+    public ParkingSession findOpenSessionByReceipt(String receipt) {
+        return parkingSessionRepository.findByReceiptNumberAndCheckOutIsNull(receipt).orElseThrow(
+                () -> new EntityNotFoundException(String.format("""
+                        Recibo '%s' não encontrado no sistema ou check-out já realizado
+                        """, receipt))
+        );
     }
 }

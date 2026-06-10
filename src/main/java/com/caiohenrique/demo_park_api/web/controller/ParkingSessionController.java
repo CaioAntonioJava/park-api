@@ -2,6 +2,7 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
 import com.caiohenrique.demo_park_api.service.ParkingLotService;
+import com.caiohenrique.demo_park_api.service.ParkingSessionService;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSessionCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSessionResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ParkingSessionMapper;
@@ -18,10 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -33,6 +31,7 @@ import java.net.URI;
 public class ParkingSessionController {
 
     private final ParkingLotService parkingLotService;
+    private final ParkingSessionService parkingSessionService;
 
 
     @Operation(
@@ -74,4 +73,13 @@ public class ParkingSessionController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
+    @GetMapping("/{receipt}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
+    public ResponseEntity<ParkingSessionResponseDTO> getOpenSessionByReceipt(@PathVariable String receipt) {
+
+        ParkingSession openSession = parkingSessionService.findOpenSessionByReceipt(receipt);
+        ParkingSessionResponseDTO responseDTO = ParkingSessionMapper.parkingSessionResponseDTO(openSession);
+
+        return ResponseEntity.ok(responseDTO);
+    }
 }
