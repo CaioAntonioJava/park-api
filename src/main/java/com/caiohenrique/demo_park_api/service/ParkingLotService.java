@@ -5,7 +5,7 @@ import com.caiohenrique.demo_park_api.entity.Client;
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
 import com.caiohenrique.demo_park_api.entity.ParkingSpot;
 import com.caiohenrique.demo_park_api.enums.SpotStatus;
-import com.caiohenrique.demo_park_api.parking.ParkingReceiptService;
+import com.caiohenrique.demo_park_api.parking.ParkingReceiptGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +39,7 @@ public class ParkingLotService {
 
         parkingSession.setCheckIn(LocalDateTime.now());
 
-        parkingSession.setReceiptNumber(ParkingReceiptService.generateReceipt());
+        parkingSession.setReceiptNumber(ParkingReceiptGenerator.generateReceipt());
 
         return parkingSessionService.save(parkingSession);
     }

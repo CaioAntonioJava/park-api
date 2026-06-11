@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ParkingReceiptService {
+public class ParkingReceiptGenerator {
 
     public static String generateReceipt() {
 
