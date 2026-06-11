@@ -39,7 +39,7 @@ public class ParkingLotService {
 
         parkingSession.setCheckIn(LocalDateTime.now());
 
-        parkingSession.setReceiptNumber(ParkingReceiptGenerator.generateReceipt());
+        parkingSession.setReceiptNumber(ParkingReceiptGenerator.generate());
 
         return parkingSessionService.save(parkingSession);
     }

@@ -1,26 +1,30 @@
 package com.caiohenrique.demo_park_api.parking;
 
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ParkingReceiptGenerator {
 
-    public static String generateReceipt() {
+    private static final DateTimeFormatter RECEIPT_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
-        LocalDateTime dateTime = LocalDateTime.now();
+    private static final String RECEIPT_PREFIX = "REC-";
 
-        String receipt = dateTime.toString().substring(0, 19)
-                .replace("-", "")
-                .replace(":", "")
-                .replace("T", "");
+    public static String generate() {
 
-        String uuidPart = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        String timestamp = LocalDateTime.now()
+                .format(RECEIPT_FORMATTER);
 
-        return "REC-" + receipt + "-" + uuidPart;
+        String randomCode = UUID.randomUUID()
+                .toString()
+                .substring(0, 8)
+                .toUpperCase();
+
+        return RECEIPT_PREFIX + timestamp + "-" + randomCode;
     }
 }
