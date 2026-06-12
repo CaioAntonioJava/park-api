@@ -8,6 +8,8 @@ import com.caiohenrique.demo_park_api.web.dto.ParkingSessionResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ParkingSessionMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -73,6 +75,25 @@ public class ParkingSessionController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
+    @Operation(
+            summary = "Buscar sessão de estacionamento por recibo", description = """
+            Retorna os dados de uma sessão de estacionamento aberta
+            a partir do número do recibo gerado no check-in.
+            A requisição exige autenticação via Bearer Token.
+            """,
+            security = @SecurityRequirement(name = "security"),
+            parameters = {
+                    @Parameter(in = ParameterIn.PATH, name = "receipt", description = "Número do recibo gerado pelo check-in")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso.",
+                            content = @Content(mediaType = "application/json;charset=UTF-8",
+                                    schema = @Schema(implementation = ParkingSessionResponseDTO.class))),
+                    @ApiResponse(responseCode = "404", description = "Número do recibo não encontrado.",
+                            content = @Content(mediaType = "application/json;charset=UTF-8",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
+            }
+    )
     @GetMapping("/{receipt}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<ParkingSessionResponseDTO> getOpenSessionByReceipt(@PathVariable String receipt) {
