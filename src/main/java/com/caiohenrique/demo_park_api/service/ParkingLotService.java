@@ -5,11 +5,14 @@ import com.caiohenrique.demo_park_api.entity.Client;
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
 import com.caiohenrique.demo_park_api.entity.ParkingSpot;
 import com.caiohenrique.demo_park_api.enums.SpotStatus;
+import com.caiohenrique.demo_park_api.parking.ParkingDiscountCalculator;
+import com.caiohenrique.demo_park_api.parking.ParkingFeeCalculator;
 import com.caiohenrique.demo_park_api.parking.ParkingReceiptGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
@@ -40,6 +43,26 @@ public class ParkingLotService {
         parkingSession.setCheckIn(LocalDateTime.now());
 
         parkingSession.setReceiptNumber(ParkingReceiptGenerator.generate());
+
+        return parkingSessionService.save(parkingSession);
+    }
+
+    @Transactional
+    public ParkingSession checkOut(String receipt) {
+        ParkingSession parkingSession = parkingSessionService.findOpenSessionByReceipt(receipt);
+
+        LocalDateTime exitDate = LocalDateTime.now();
+
+        long completedParkingSessions = parkingSessionService.countCompletedParkingSessions(parkingSession.getClient().getCpf());
+        parkingSession.setCheckOut(exitDate);
+        parkingSession.getParkingSpot().setSpotStatus(SpotStatus.LIVRE);
+
+        BigDecimal parkingFee = ParkingFeeCalculator.calculate(parkingSession.getCheckIn(), exitDate);
+        parkingSession.setParkingFee(parkingFee);
+
+
+        BigDecimal discount = ParkingDiscountCalculator.calculateDiscount(parkingFee, completedParkingSessions);
+        parkingSession.setDiscount(discount);
 
         return parkingSessionService.save(parkingSession);
     }

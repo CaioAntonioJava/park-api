@@ -68,7 +68,7 @@ public class ParkingSessionController {
         ParkingSessionResponseDTO responseDTO = ParkingSessionMapper.parkingSessionResponseDTO(parkingSession);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequestUri().path("/{receipt}")
+                .fromCurrentRequestUri().path("/api/v1/parking-sessions/{receipt}")
                 .buildAndExpand(parkingSession.getReceiptNumber())
                 .toUri();
 
@@ -99,6 +99,16 @@ public class ParkingSessionController {
     public ResponseEntity<ParkingSessionResponseDTO> getOpenSessionByReceipt(@PathVariable String receipt) {
 
         ParkingSession openSession = parkingSessionService.findOpenSessionByReceipt(receipt);
+        ParkingSessionResponseDTO responseDTO = ParkingSessionMapper.parkingSessionResponseDTO(openSession);
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @PutMapping("/check-out/{receipt}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<ParkingSessionResponseDTO> checkOut(@PathVariable String receipt) {
+
+        ParkingSession openSession = parkingLotService.checkOut(receipt);
         ParkingSessionResponseDTO responseDTO = ParkingSessionMapper.parkingSessionResponseDTO(openSession);
 
         return ResponseEntity.ok(responseDTO);

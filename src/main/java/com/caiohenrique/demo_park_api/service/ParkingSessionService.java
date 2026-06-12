@@ -16,6 +16,7 @@ public class ParkingSessionService {
     /* Responsável por cadastrar uma nova sessão de estacionamento. */
     @Transactional
     public ParkingSession save(ParkingSession parkingSession) {
+
         return parkingSessionRepository.save(parkingSession);
     }
 
@@ -26,5 +27,10 @@ public class ParkingSessionService {
                         Recibo '%s' não encontrado no sistema ou check-out já realizado
                         """, receipt))
         );
+    }
+
+    @Transactional(readOnly = true)
+    public long countCompletedParkingSessions(String cpf) {
+        return parkingSessionRepository.countByClientCpfAndCheckOutIsNotNull(cpf);
     }
 }
