@@ -6,6 +6,8 @@ import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.repository.ParkingSpotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,5 +45,10 @@ public class ParkingSpotService {
                         Nenhuma vaga livre foi encontrada
                         """))
         );
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ParkingSpot> findAll(Pageable pageable) {
+        return parkingSpotRepository.findAll(pageable);
     }
 }

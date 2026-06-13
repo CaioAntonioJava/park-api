@@ -2,8 +2,10 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSpot;
 import com.caiohenrique.demo_park_api.service.ParkingSpotService;
+import com.caiohenrique.demo_park_api.web.dto.PageableDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSpotCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSpotResponseDTO;
+import com.caiohenrique.demo_park_api.web.dto.mapper.PageableMapper;
 import com.caiohenrique.demo_park_api.web.dto.mapper.SpotMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -81,5 +86,13 @@ public class ParkingSpotController {
     public ResponseEntity<ParkingSpotResponseDTO> getSpotByCode(@PathVariable String spotCode) {
         ParkingSpot parkingSpot = parkingSpotService.findByCode(spotCode);
         return ResponseEntity.ok().body(SpotMapper.parkingSpotResponseDTO(parkingSpot));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PageableDTO> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"spotCode"}) Pageable pageable) {
+        Page<ParkingSpot> parkingSpots = parkingSpotService.findAll(pageable);
+        Page<ParkingSpotResponseDTO> dtoPage = parkingSpots.map(SpotMapper::parkingSpotResponseDTO);
+        return ResponseEntity.ok().body(PageableMapper.toPageableDto(dtoPage));
     }
 }
