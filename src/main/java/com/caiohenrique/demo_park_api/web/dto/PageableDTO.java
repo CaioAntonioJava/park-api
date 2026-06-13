@@ -9,15 +9,14 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PageableDTO {
+public class PageableDTO<T> {
 
-    private List content = new ArrayList<>();
+    private List<T> content = new ArrayList<>();
 
     private boolean first;
-
     private boolean last;
 
-    @JsonProperty("page") // trocar o nome do JSON de resposta number > page
+    @JsonProperty("page")
     private int number;
 
     private int size;
@@ -26,6 +25,5 @@ public class PageableDTO {
     private int numberOfElements;
 
     private int totalPages;
-
     private int totalElements;
 }
