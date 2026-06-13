@@ -120,7 +120,7 @@ public class ClientController {
     )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PageableDTO> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"name"}) Pageable pageable) {
+    public ResponseEntity<PageableDTO<ClientResponseDTO>> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"name"}) Pageable pageable) {
         Page<ClientProjection> clientList = clientService.findAll(pageable);
         return ResponseEntity.ok().body(PageableMapper.toPageableDto(clientList));
     }
