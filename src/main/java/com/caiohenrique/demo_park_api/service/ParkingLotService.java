@@ -5,6 +5,7 @@ import com.caiohenrique.demo_park_api.entity.Client;
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
 import com.caiohenrique.demo_park_api.entity.ParkingSpot;
 import com.caiohenrique.demo_park_api.enums.SpotStatus;
+import com.caiohenrique.demo_park_api.exception.ActiveParkingSessionAlreadyExistsException;
 import com.caiohenrique.demo_park_api.parking.ParkingDiscountCalculator;
 import com.caiohenrique.demo_park_api.parking.ParkingFeeCalculator;
 import com.caiohenrique.demo_park_api.parking.ParkingReceiptGenerator;
@@ -32,6 +33,16 @@ public class ParkingLotService {
 
     @Transactional
     public ParkingSession checkIn(ParkingSession parkingSession) {
+
+        if (parkingSessionService.existsOpenSessionByLicensePlate(
+                parkingSession.getLicensePlate())) {
+
+            throw new ActiveParkingSessionAlreadyExistsException(
+                    String.format(
+                            "A placa %s já possui uma sessão de estacionamento ativa.", parkingSession.getLicensePlate()
+                    ));
+        }
+
         Client client = clientService.findByCpf(parkingSession.getClient().getCpf());
         parkingSession.setClient(client);
 

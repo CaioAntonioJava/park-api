@@ -41,7 +41,11 @@ public class ApiExceptionHandler {
 
     }
 
-    @ExceptionHandler({UserNameUniqueViolationException.class, CpfUniqueViolationException.class, CodeUniqueViolationException.class})
+    @ExceptionHandler({
+            UserNameUniqueViolationException.class,
+            CpfUniqueViolationException.class,
+            CodeUniqueViolationException.class,
+            ActiveParkingSessionAlreadyExistsException.class})
     public ResponseEntity<ErrorMessage> uniqueViolationException(RuntimeException exception,
                                                                  HttpServletRequest request) {
 

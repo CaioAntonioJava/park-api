@@ -12,4 +12,7 @@ public interface ParkingSessionRepository extends JpaRepository<ParkingSession, 
     Optional<ParkingSession> findByReceiptNumberAndCheckOutIsNull(String receipt);
 
     long countByClientCpfAndCheckOutIsNotNull(String cpf);
+
+
+    boolean existsByLicensePlateAndCheckOutIsNull(String licensePlate);
 }

@@ -33,4 +33,9 @@ public class ParkingSessionService {
     public long countCompletedParkingSessions(String cpf) {
         return parkingSessionRepository.countByClientCpfAndCheckOutIsNotNull(cpf);
     }
+
+    @Transactional(readOnly = true)
+    public boolean existsOpenSessionByLicensePlate(String licensePlate) {
+        return parkingSessionRepository.existsByLicensePlateAndCheckOutIsNull(licensePlate);
+    }
 }
