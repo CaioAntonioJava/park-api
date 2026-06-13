@@ -88,9 +88,25 @@ public class ParkingSpotController {
         return ResponseEntity.ok().body(SpotMapper.parkingSpotResponseDTO(parkingSpot));
     }
 
+
+    @Operation(
+            summary = "Recuperar lista de vagas",
+            description = "Lista todas as vagas do estacionamento com paginação. " +
+                    "Cada item contém id, código da vaga e status (LIVRE/OCUPADA). " +
+                    "Requer autenticação via Bearer Token. Acesso permitido apenas para ADMIN.",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Lista de vagas recuperada com sucesso", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PageableDTO.class))),
+                    @ApiResponse(
+                            responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PageableDTO> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"spotCode"}) Pageable pageable) {
+    public ResponseEntity<PageableDTO<ParkingSpotResponseDTO>> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"spotCode"}) Pageable pageable) {
         Page<ParkingSpot> parkingSpots = parkingSpotService.findAll(pageable);
         Page<ParkingSpotResponseDTO> dtoPage = parkingSpots.map(SpotMapper::parkingSpotResponseDTO);
         return ResponseEntity.ok().body(PageableMapper.toPageableDto(dtoPage));
