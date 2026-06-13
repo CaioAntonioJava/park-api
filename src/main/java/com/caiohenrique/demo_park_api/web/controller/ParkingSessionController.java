@@ -104,6 +104,27 @@ public class ParkingSessionController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @Operation(
+            summary = "Realizar check-out de veículo",
+            description = "Finaliza a sessão de estacionamento de um veículo com base no número do recibo. " +
+                    "Essa operação calcula o valor total, libera a vaga e encerra a sessão ativa. " +
+                    "Requer autenticação via Bearer Token. Acesso restrito a usuários com perfil ADMIN.",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Check-out realizado com sucesso", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParkingSessionResponseDTO.class))),
+                    @ApiResponse(
+                            responseCode = "401", description = "Não autenticado ou token inválido", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(
+                            responseCode = "403", description = "Acesso negado: usuário não possui permissão", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(
+                            responseCode = "404", description = "Recibo não encontrado ou sessão já finalizada", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @PutMapping("/check-out/{receipt}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<ParkingSessionResponseDTO> checkOut(@PathVariable String receipt) {
