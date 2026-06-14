@@ -1,4 +1,4 @@
-📌 *Este projeto foi desenvolvido com foco em organização, segurança, escalabilidade e boas práticas de APIs REST.* CURSO APIREST e Spring Boot - Instrutor : Marcio Ballem
+📌 *Este projeto foi desenvolvido com foco em organização, segurança, escalabilidade e boas práticas de APIs REST.
 
 # 🚗 Sistema de Gerenciamento de Estacionamento (API REST)
 
@@ -15,7 +15,6 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 * API REST
 * Autenticação com **JWT (JSON Web Token)**
 * Auditoria de dados (criação e atualização)
-* Testes de integração **end-to-end (E2E)**
 * Documentação dos endpoints (Swagger/OpenAPI ou equivalente)
 
 ---
@@ -60,7 +59,6 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 ### Qualidade
 
 * Todos os recursos documentados
-* Testes de integração end-to-end implementados
 
 ---
 
@@ -69,8 +67,6 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 * Sistema de autenticação baseado em **JWT**
 * Endpoint dedicado para login/autenticação
 * Token necessário para acesso aos recursos protegidos
-* Testes aplicados ao fluxo de autenticação
-
 ---
 
 ## 🧑‍💼 Módulo de Clientes
@@ -100,7 +96,6 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 ### Qualidade
 
 * Recursos totalmente documentados
-* Testes de integração end-to-end
 
 ---
 
@@ -126,7 +121,6 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 ### Qualidade
 
 * Endpoints documentados
-* Testes de integração end-to-end
 
 ---
 
@@ -195,13 +189,6 @@ O cliente deve informar o **número do recibo** para retirada do veículo.
 ## 📄 Relatórios
 
 * Cliente pode gerar um **relatório em PDF** contendo o histórico de seus estacionamentos
-
----
-
-## 🧪 Testes
-
-* Todos os módulos possuem **testes de integração end-to-end**
-* Cobertura dos fluxos principais e regras de negócio
 
 ---
 
