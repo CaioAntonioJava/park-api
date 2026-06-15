@@ -4,9 +4,12 @@
 
 ## 📌 Visão Geral
 
-Este projeto consiste no desenvolvimento de uma **API REST** para gerenciamento de estacionamentos, contemplando controle de usuários, clientes, vagas e fluxo de entrada e saída de veículos. A aplicação utiliza **autenticação via JSON Web Token (JWT)** e segue boas práticas de segurança, auditoria e documentação de APIs.
+Este projeto consiste no desenvolvimento de uma **API REST** para gerenciamento de estacionamentos, contemplando controle de usuários, clientes, vagas e fluxo
+de entrada e saída de veículos. A aplicação utiliza **autenticação via JSON Web Token (JWT)** e segue boas práticas de segurança, auditoria e documentação de
+APIs.
 
-O sistema foi especificado a partir de um levantamento de requisitos junto ao cliente e tem como objetivo servir como **back-end** para consumo por aplicações front-end.
+O sistema foi especificado a partir de um levantamento de requisitos junto ao cliente e tem como objetivo servir como **back-end** para consumo por aplicações
+front-end.
 
 ---
 
@@ -25,10 +28,10 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 * Locale configurado conforme o país
 * Sistema de auditoria com:
 
-  * Data de criação
-  * Data da última modificação
-  * Usuário responsável pela criação
-  * Usuário responsável pela última alteração
+    * Data de criação
+    * Data da última modificação
+    * Usuário responsável pela criação
+    * Usuário responsável pela última alteração
 * Banco de dados configurado para ambiente de desenvolvimento
 
 ---
@@ -42,19 +45,19 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 * Senha com no mínimo **6 caracteres**
 * Perfis disponíveis:
 
-  * **ADMIN**
-  * **CLIENTE**
+    * **ADMIN**
+    * **CLIENTE**
 
 ### Regras de Acesso
 
 * Administrador pode:
 
-  * Recuperar qualquer usuário por ID
-  * Listar todos os usuários
+    * Recuperar qualquer usuário por ID
+    * Listar todos os usuários
 * Cliente pode:
 
-  * Recuperar apenas seus próprios dados
-  * Alterar sua própria senha (quando autenticado)
+    * Recuperar apenas seus próprios dados
+    * Alterar sua própria senha (quando autenticado)
 
 ### Qualidade
 
@@ -67,6 +70,7 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 * Sistema de autenticação baseado em **JWT**
 * Endpoint dedicado para login/autenticação
 * Token necessário para acesso aos recursos protegidos
+
 ---
 
 ## 🧑‍💼 Módulo de Clientes
@@ -87,11 +91,11 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 
 * Cliente autenticado pode:
 
-  * Consultar seus próprios dados
+    * Consultar seus próprios dados
 * Administrador autenticado pode:
 
-  * Listar todos os clientes
-  * Localizar cliente por ID
+    * Listar todos os clientes
+    * Localizar cliente por ID
 
 ### Qualidade
 
@@ -111,8 +115,8 @@ O sistema foi especificado a partir de um levantamento de requisitos junto ao cl
 * Código único (diferente do ID)
 * Status:
 
-  * Livre
-  * Ocupada
+    * Livre
+    * Ocupada
 
 ### Funcionalidades
 
@@ -163,7 +167,7 @@ O cliente deve informar o **número do recibo** para retirada do veículo.
 ## 💰 Regras de Cálculo de Tarifas
 
 | Período         | Valor                                      |
-| --------------- | ------------------------------------------ |
+|-----------------|--------------------------------------------|
 | Até 15 minutos  | R$ 5,00                                    |
 | Até 60 minutos  | R$ 9,25                                    |
 | Após 60 minutos | R$ 9,25 + R$ 1,75 a cada 15 min adicionais |
@@ -182,7 +186,7 @@ O cliente deve informar o **número do recibo** para retirada do veículo.
 
 * A cada **10 estacionamentos completos** (entrada + saída), o cliente recebe:
 
-  * **30% de desconto** no próximo estacionamento concluído
+    * **30% de desconto** no próximo estacionamento concluído
 
 ---
 
