@@ -34,12 +34,11 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
+        return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
                         Usuário ID { %d } não encontrado.
                         """, id))
         );
-        return user;
     }
 
     @Transactional

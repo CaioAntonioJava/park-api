@@ -31,12 +31,11 @@ public class ClientService {
 
     @Transactional(readOnly = true)
     public Client findById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow(
+        return clientRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("""
                         Cliente ID { %d } não encontrado.
                         """, id))
         );
-        return client;
     }
 
     @Transactional(readOnly = true)
