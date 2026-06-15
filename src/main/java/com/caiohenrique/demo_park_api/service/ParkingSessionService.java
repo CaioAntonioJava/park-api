@@ -3,7 +3,10 @@ package com.caiohenrique.demo_park_api.service;
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
 import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.repository.ParkingSessionRepository;
+import com.caiohenrique.demo_park_api.repository.projection.ParkingSessionProjection;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,5 +40,10 @@ public class ParkingSessionService {
     @Transactional(readOnly = true)
     public boolean existsOpenSessionByLicensePlate(String licensePlate) {
         return parkingSessionRepository.existsByLicensePlateAndCheckOutIsNull(licensePlate);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ParkingSessionProjection> getAllParkingSessionsByCpf(String cpf, Pageable pageable) {
+        return parkingSessionRepository.findAllByClientCpf(cpf, pageable);
     }
 }

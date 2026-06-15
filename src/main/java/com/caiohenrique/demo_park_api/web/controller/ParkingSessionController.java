@@ -1,10 +1,13 @@
 package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
+import com.caiohenrique.demo_park_api.repository.projection.ParkingSessionProjection;
 import com.caiohenrique.demo_park_api.service.ParkingLotService;
 import com.caiohenrique.demo_park_api.service.ParkingSessionService;
+import com.caiohenrique.demo_park_api.web.dto.PageableDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSessionCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSessionResponseDTO;
+import com.caiohenrique.demo_park_api.web.dto.mapper.PageableMapper;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ParkingSessionMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +21,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -134,4 +141,17 @@ public class ParkingSessionController {
 
         return ResponseEntity.ok(responseDTO);
     }
+
+
+    @GetMapping("/cpf/{cpf}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PageableDTO> getParkingSessionsByCpf(@PathVariable String cpf,
+                                                               @PageableDefault(size = 5, sort = "checkIn",
+                                                                       direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<ParkingSessionProjection> projection = parkingSessionService.getAllParkingSessionsByCpf(cpf, pageable);
+        PageableDTO pageableDTO = PageableMapper.toPageableDto(projection);
+        return ResponseEntity.ok(pageableDTO);
+    }
+
 }
