@@ -7,11 +7,11 @@ import com.caiohenrique.demo_park_api.exception.UserNameUniqueViolationException
 import com.caiohenrique.demo_park_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,8 +60,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
 

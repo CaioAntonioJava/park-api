@@ -1,5 +1,6 @@
 package com.caiohenrique.demo_park_api.service;
 
+import com.caiohenrique.demo_park_api.entity.Client;
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
 import com.caiohenrique.demo_park_api.exception.EntityNotFoundException;
 import com.caiohenrique.demo_park_api.repository.ParkingSessionRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ParkingSessionService {
 
     private final ParkingSessionRepository parkingSessionRepository;
+    private final ClientService clientService;
 
     /* Responsável por cadastrar uma nova sessão de estacionamento. */
     @Transactional
@@ -44,6 +46,8 @@ public class ParkingSessionService {
 
     @Transactional(readOnly = true)
     public Page<ParkingSessionProjection> getAllParkingSessionsByCpf(String cpf, Pageable pageable) {
+
+        Client client = clientService.findByCpf(cpf);
         return parkingSessionRepository.findAllByClientCpf(cpf, pageable);
     }
 }

@@ -7,10 +7,8 @@ import com.caiohenrique.demo_park_api.service.ClientService;
 import com.caiohenrique.demo_park_api.service.UserService;
 import com.caiohenrique.demo_park_api.web.dto.ClientCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ClientResponseDTO;
-import com.caiohenrique.demo_park_api.web.dto.PageableDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ClientMapper;
-import com.caiohenrique.demo_park_api.web.dto.mapper.PageableMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -103,7 +101,7 @@ public class ClientController {
                             description = "Representa a página retornada."
                     ),
                     @Parameter(in = ParameterIn.QUERY, name = "size",
-                            content = @Content(schema = @Schema(type = "integer", defaultValue = "20")),
+                            content = @Content(schema = @Schema(type = "integer", defaultValue = "10")),
                             description = "Representa o total de elementos na página."
                     ),
                     @Parameter(in = ParameterIn.QUERY, name = "sort", hidden = true,
@@ -120,9 +118,9 @@ public class ClientController {
     )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PageableDTO<ClientProjection>> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"name"}) Pageable pageable) {
+    public ResponseEntity<Page<ClientProjection>> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"name"}) Pageable pageable) {
         Page<ClientProjection> clientList = clientService.findAll(pageable);
-        return ResponseEntity.ok().body(PageableMapper.toPageableDto(clientList));
+        return ResponseEntity.ok().body(clientList);
     }
 
     @Operation(

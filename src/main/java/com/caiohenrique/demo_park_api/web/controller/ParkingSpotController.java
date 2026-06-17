@@ -2,10 +2,8 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSpot;
 import com.caiohenrique.demo_park_api.service.ParkingSpotService;
-import com.caiohenrique.demo_park_api.web.dto.PageableDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSpotCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSpotResponseDTO;
-import com.caiohenrique.demo_park_api.web.dto.mapper.PageableMapper;
 import com.caiohenrique.demo_park_api.web.dto.mapper.SpotMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -98,7 +96,7 @@ public class ParkingSpotController {
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "Lista de vagas recuperada com sucesso", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PageableDTO.class))),
+                            schema = @Schema(implementation = Page.class))),
                     @ApiResponse(
                             responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
@@ -106,9 +104,9 @@ public class ParkingSpotController {
     )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PageableDTO<ParkingSpotResponseDTO>> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"spotCode"}) Pageable pageable) {
+    public ResponseEntity<Page<ParkingSpotResponseDTO>> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"spotCode"}) Pageable pageable) {
         Page<ParkingSpot> parkingSpots = parkingSpotService.findAll(pageable);
         Page<ParkingSpotResponseDTO> dtoPage = parkingSpots.map(SpotMapper::parkingSpotResponseDTO);
-        return ResponseEntity.ok().body(PageableMapper.toPageableDto(dtoPage));
+        return ResponseEntity.ok().body(dtoPage);
     }
 }

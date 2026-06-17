@@ -8,6 +8,7 @@ import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.UserMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,12 +16,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "Usuários", description = "Contém todos as operaçõe relativas aos recursos para cadastro, edição e leitura de um usuário")
 @RestController
@@ -78,9 +80,9 @@ public class UserController {
     )
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserResponseDTO>> getAll() {
-        List<User> users = userService.findAll();
-        return ResponseEntity.ok().body(UserMapper.toListDto(users));
+    public ResponseEntity<Page<UserResponseDTO>> getAll(@Parameter(hidden = true) @PageableDefault(size = 5, sort = {"id"}) Pageable pageable) {
+        Page<User> users = userService.findAll(pageable);
+        return ResponseEntity.ok(users.map(UserMapper::toResponseDto));
     }
 
 

@@ -4,10 +4,8 @@ import com.caiohenrique.demo_park_api.entity.ParkingSession;
 import com.caiohenrique.demo_park_api.repository.projection.ParkingSessionProjection;
 import com.caiohenrique.demo_park_api.service.ParkingLotService;
 import com.caiohenrique.demo_park_api.service.ParkingSessionService;
-import com.caiohenrique.demo_park_api.web.dto.PageableDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSessionCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ParkingSessionResponseDTO;
-import com.caiohenrique.demo_park_api.web.dto.mapper.PageableMapper;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ParkingSessionMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -119,17 +117,21 @@ public class ParkingSessionController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(
-                            responseCode = "200", description = "Check-out realizado com sucesso", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ParkingSessionResponseDTO.class))),
+                            responseCode = "200", description = "Check-out realizado com sucesso",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ParkingSessionResponseDTO.class))),
                     @ApiResponse(
-                            responseCode = "401", description = "Não autenticado ou token inválido", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class))),
+                            responseCode = "401", description = "Não autenticado ou token inválido",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(
-                            responseCode = "403", description = "Acesso negado: usuário não possui permissão", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class))),
+                            responseCode = "403", description = "Acesso negado: usuário não possui permissão",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(
-                            responseCode = "404", description = "Recibo não encontrado ou sessão já finalizada", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class)))
+                            responseCode = "404", description = "Recibo não encontrado ou sessão já finalizada",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
     @PutMapping("/check-out/{receipt}")
@@ -142,16 +144,61 @@ public class ParkingSessionController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @Operation(
+            summary = "Listar histórico de estacionamentos por CPF",
+            description = "Recurso para consultar o histórico de sessões de estacionamento de um cliente " +
+                    "por meio do CPF. A requisição exige uso de um bearer token válido. " +
+                    "Acesso restrito a usuários com perfil ADMIN. " +
+                    "O resultado é retornado de forma paginada.",
 
+            security = @SecurityRequirement(name = "security"),
+
+            parameters = {
+                    @Parameter(
+                            name = "cpf",
+                            description = "CPF do cliente utilizado para consulta do histórico de estacionamentos",
+                            example = "42212125860",
+                            required = true
+                    ),
+                    @Parameter(
+                            name = "page",
+                            description = "Número da página a ser consultada",
+                            example = "0"
+                    ),
+                    @Parameter(
+                            name = "size",
+                            description = "Quantidade de registros por página",
+                            example = "5"
+                    ),
+                    @Parameter(
+                            name = "sort",
+                            description = "Critério de ordenação no formato campo,direção. Exemplo: checkIn,asc",
+                            example = "checkIn,asc"
+                    )
+            },
+
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Histórico de estacionamentos retornado com sucesso",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ParkingSessionProjection.class))),
+                    @ApiResponse(
+                            responseCode = "404", description = "CPF informado é inválido, ou não cadastrado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403", description = "Acesso negado. Recurso disponível apenas para administradores",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @GetMapping("/cpf/{cpf}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PageableDTO<ParkingSessionProjection>> getParkingSessionsByCpf(@PathVariable String cpf,
-                                                                                         @PageableDefault(size = 5, sort = "checkIn",
-                                                                                                 direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<ParkingSessionProjection>> getParkingSessionsByCpf(
+            @PathVariable String cpf, @Parameter(hidden = true) @PageableDefault(size = 5, sort = "checkIn", direction = Sort.Direction.ASC) Pageable pageable) {
 
         Page<ParkingSessionProjection> projection = parkingSessionService.getAllParkingSessionsByCpf(cpf, pageable);
-        PageableDTO<ParkingSessionProjection> pageableDTO = PageableMapper.toPageableDto(projection);
-        return ResponseEntity.ok(pageableDTO);
+        return ResponseEntity.ok(projection);
     }
-
 }
