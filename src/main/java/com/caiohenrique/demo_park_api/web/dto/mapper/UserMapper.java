@@ -12,11 +12,12 @@ import java.util.stream.Collectors;
 
 public class UserMapper {
 
-    public static User toUser (UserCreateDTO createDto) {
+    public static User toUser(UserCreateDTO createDto) {
+
         return new ModelMapper().map(createDto, User.class);
     }
 
-    public static UserResponseDTO toResponseDto (User user) {
+    public static UserResponseDTO toResponseDto(User user) {
         String role = user.getRole().name().substring("ROLE_".length()); // remove na conversão a String "ROLE_" do enum, p/ inserir apenas ADMIN | CLIENT
 
         PropertyMap<User, UserResponseDTO> props = new PropertyMap<User, UserResponseDTO>() {
@@ -31,7 +32,8 @@ public class UserMapper {
         return mapper.map(user, UserResponseDTO.class);
     }
 
-    public static List<UserResponseDTO> toListDto (List<User> users) {
+    public static List<UserResponseDTO> toListDto(List<User> users) {
         return users.stream().map(user -> toResponseDto(user)).collect(Collectors.toList());
     }
+
 }
