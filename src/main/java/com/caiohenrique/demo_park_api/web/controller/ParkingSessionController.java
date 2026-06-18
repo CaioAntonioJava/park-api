@@ -1,6 +1,7 @@
 package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.ParkingSession;
+import com.caiohenrique.demo_park_api.jwt.JwtUserDetails;
 import com.caiohenrique.demo_park_api.repository.projection.ParkingSessionProjection;
 import com.caiohenrique.demo_park_api.service.ParkingLotService;
 import com.caiohenrique.demo_park_api.service.ParkingSessionService;
@@ -26,6 +27,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -201,4 +203,16 @@ public class ParkingSessionController {
         Page<ParkingSessionProjection> projection = parkingSessionService.getAllParkingSessionsByCpf(cpf, pageable);
         return ResponseEntity.ok(projection);
     }
+
+    @GetMapping()
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Page<ParkingSessionProjection>> getAllUserParkingSessions(@AuthenticationPrincipal JwtUserDetails user,
+                                                                                    @PageableDefault(size = 5, sort = "checkIn", direction = Sort.Direction.ASC)
+                                                                                    Pageable pageable) {
+
+        Page<ParkingSessionProjection> projection = parkingSessionService.findAllByUserId(user.getId(), pageable);
+        return ResponseEntity.ok(projection);
+    }
+
+
 }

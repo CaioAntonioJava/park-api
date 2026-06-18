@@ -41,4 +41,6 @@ public interface ParkingSessionRepository extends JpaRepository<ParkingSession, 
             @Param("cpf") String cpf,
             Pageable pageable
     );
+
+    Page<ParkingSessionProjection> findAllByClientUserId(Long userId, Pageable pageable);
 }
