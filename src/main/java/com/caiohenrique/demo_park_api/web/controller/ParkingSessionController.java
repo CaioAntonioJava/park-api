@@ -209,10 +209,7 @@ public class ParkingSessionController {
     public ResponseEntity<Page<ParkingSessionProjection>> getAllUserParkingSessions(@AuthenticationPrincipal JwtUserDetails user,
                                                                                     @PageableDefault(size = 5, sort = "checkIn", direction = Sort.Direction.ASC)
                                                                                     Pageable pageable) {
-
         Page<ParkingSessionProjection> projection = parkingSessionService.findAllByUserId(user.getId(), pageable);
         return ResponseEntity.ok(projection);
     }
-
-
 }
