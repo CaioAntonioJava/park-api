@@ -47,7 +47,7 @@ public class ParkingSessionService {
     @Transactional(readOnly = true)
     public Page<ParkingSessionProjection> getAllParkingSessionsByCpf(String cpf, Pageable pageable) {
 
-        Client client = clientService.findByCpf(cpf);
+        Client client = clientService.findByCpf(cpf); // PARA CONSULTAR SE CLIENTE C/ CPF INFORMADO EXISTE NA BASE DE DADOS.
         return parkingSessionRepository.findAllByClientCpf(cpf, pageable);
     }
 }
