@@ -42,5 +42,24 @@ public interface ParkingSessionRepository extends JpaRepository<ParkingSession, 
             Pageable pageable
     );
 
-    Page<ParkingSessionProjection> findAllByClientUserId(Long userId, Pageable pageable);
+    @Query("""
+            select
+                ps.licensePlate as licensePlate,
+                ps.brand as brand,
+                ps.model as model,
+                ps.color as color,
+                ps.client.cpf as clientCpf,
+                ps.receiptNumber as receiptNumber,
+                ps.checkIn as checkIn,
+                ps.checkOut as checkOut,
+                ps.parkingSpot.spotCode as spotCode,
+                ps.parkingFee as parkingFee,
+                ps.discount as discount
+            from ParkingSession ps
+            where ps.client.user.id = :userId
+            """)
+    Page<ParkingSessionProjection> findAllByClientUserId(
+            @Param("userId") Long userId,
+            Pageable pageable
+    );
 }

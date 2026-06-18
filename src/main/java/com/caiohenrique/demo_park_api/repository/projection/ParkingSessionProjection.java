@@ -36,6 +36,8 @@ public interface ParkingSessionProjection {
 
     String getSpotCode();
 
+    String getParkingSpotSpotCode();
+
     LocalDateTime getCheckIn();
 
     LocalDateTime getCheckOut();
