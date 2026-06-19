@@ -245,9 +245,9 @@ public class ParkingSessionController {
     )
     @GetMapping()
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<Page<ParkingSessionProjection>> getAllUserParkingSessions(@AuthenticationPrincipal JwtUserDetails user,
-                                                                                    @PageableDefault(size = 5, sort = "checkIn", direction = Sort.Direction.ASC)
-                                                                                    Pageable pageable) {
+    public ResponseEntity<Page<ParkingSessionProjection>> getAllUserParkingSessions(@AuthenticationPrincipal JwtUserDetails user, @Parameter(hidden = true)
+    @PageableDefault(size = 5, sort = "checkIn", direction = Sort.Direction.ASC)
+    Pageable pageable) {
         Page<ParkingSessionProjection> projection = parkingSessionService.findAllByUserId(user.getId(), pageable);
         return ResponseEntity.ok(projection);
     }
