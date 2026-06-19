@@ -204,6 +204,45 @@ public class ParkingSessionController {
         return ResponseEntity.ok(projection);
     }
 
+    @Operation(
+            summary = "Listar todas as sessões de estacionamento do cliente autenticado",
+            description = "Recurso para consultar todas as sessões de estacionamento associadas ao cliente autenticado. " +
+                    "A requisição exige uso de um bearer token válido. " +
+                    "Acesso restrito a usuários com perfil CLIENT. " +
+                    "O resultado é retornado de forma paginada.",
+
+            security = @SecurityRequirement(name = "security"),
+
+            parameters = {
+                    @Parameter(
+                            name = "page",
+                            description = "Número da página a ser consultada",
+                            example = "0"
+                    ),
+                    @Parameter(
+                            name = "size",
+                            description = "Quantidade de registros por página",
+                            example = "5"
+                    ),
+                    @Parameter(
+                            name = "sort",
+                            description = "Critério de ordenação no formato campo,direção. Exemplo: checkIn,asc",
+                            example = "checkIn,asc"
+                    )
+            },
+
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Sessões de estacionamento retornadas com sucesso",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ParkingSessionProjection.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403", description = "Acesso negado. Recurso disponível apenas para clientes",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
     @GetMapping()
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Page<ParkingSessionProjection>> getAllUserParkingSessions(@AuthenticationPrincipal JwtUserDetails user,
