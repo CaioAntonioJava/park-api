@@ -23,10 +23,10 @@ public class ParkingSessionCreateDTO {
      * e do cliente para registrar uma nova sessão de estacionamento.
      */
 
-    @Schema(description = "Placa do veículo", example = "ABC-1234")
+    @Schema(description = "Placa do veículo", example = "BRA1234")
     @NotBlank(message = "A placa é obrigatória")
-    @Size(min = 8, max = 8)
-    @Pattern(regexp = "([A-Z]{3}-\\d{4})|([A-Z]{3}\\d[A-Z]\\d{2})", message = "Placa inválida")
+    @Size(min = 7, max = 8)
+    @Pattern(regexp = "^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$", message = "Placa inválida")
     private String licensePlate;
 
     @Schema(description = "Marca do veículo", example = "Toyota")
