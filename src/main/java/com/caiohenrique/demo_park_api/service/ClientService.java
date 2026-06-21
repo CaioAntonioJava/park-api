@@ -46,7 +46,11 @@ public class ClientService {
     // ===== Retrieves the currently authenticated user by ID. =====
     @Transactional(readOnly = true)
     public Client findByUserId(Long id) {
-        return clientRepository.findByUserId(id);
+        return clientRepository.findByUserId(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("""
+                        Cliente não encontrado para o usuário id: {%d}
+                        """, id))
+        );
     }
 
     @Transactional(readOnly = true)
