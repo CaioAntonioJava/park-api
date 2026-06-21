@@ -75,7 +75,7 @@ public class ParkingSessionController {
         ParkingSessionResponseDTO responseDTO = ParkingSessionMapper.parkingSessionResponseDTO(parkingSession);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequestUri().path("/api/v1/parking-sessions/{receipt}")
+                .fromCurrentRequestUri().path("/{receipt}")
                 .buildAndExpand(parkingSession.getReceiptNumber())
                 .toUri();
 
