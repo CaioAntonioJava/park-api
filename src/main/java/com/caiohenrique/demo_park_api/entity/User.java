@@ -23,7 +23,6 @@ public class User extends Auditable implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ïd")
     private Long id;
 
     @Column(name = "username", unique = true, nullable = false, length = 100)
