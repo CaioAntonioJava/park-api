@@ -137,7 +137,7 @@ public class ParkingSessionController {
             }
     )
     @PutMapping("/check-out/{receipt}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ParkingSessionResponseDTO> checkOut(@PathVariable String receipt) {
 
         ParkingSession openSession = parkingLotService.checkOut(receipt);

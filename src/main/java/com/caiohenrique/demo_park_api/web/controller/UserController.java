@@ -2,6 +2,7 @@ package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.User;
 import com.caiohenrique.demo_park_api.service.UserService;
+import com.caiohenrique.demo_park_api.web.dto.AdminResetPasswordDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserChangePasswordDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
@@ -101,12 +102,33 @@ public class UserController {
                             schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
-    @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT') and (#id == authentication.principal.id) ")
-    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
-        User user = userService.updatePassword(
+    @PatchMapping("/{id}/password")
+    @PreAuthorize("#id == authentication.principal.id")
+    public ResponseEntity<Void> changePassword(@PathVariable Long id, @Valid @RequestBody UserChangePasswordDTO userChangePasswordDTO) {
+        User user = userService.changePassword(
                 id, userChangePasswordDTO.getCurrentPassword(), userChangePasswordDTO.getNewPassword(), userChangePasswordDTO.getConfirmPassword()
         );
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(
+            summary = "Redefinir senha de um usuário", description = "Permite que um administrador redefina a senha de qualquer usuário cadastrado. Requer autenticação via Bearer Token.",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "400", description = "Erro de validação: senha inválida ou confirmação de senha divergente", content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
+    @PatchMapping("/{id}/reset-password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> resetPassword(@PathVariable Long id, @Valid @RequestBody AdminResetPasswordDTO dto) {
+
+        userService.resetPassword(id, dto.getNewPassword(), dto.getConfirmPassword());
         return ResponseEntity.noContent().build();
     }
 }

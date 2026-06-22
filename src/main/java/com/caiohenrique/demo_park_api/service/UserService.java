@@ -42,7 +42,7 @@ public class UserService {
     }
 
     @Transactional
-    public User updatePassword(Long id, String currentPassword, String newPassword, String confirmPassword) {
+    public User changePassword(Long id, String currentPassword, String newPassword, String confirmPassword) {
 
         if (!newPassword.equals(confirmPassword)) {
             throw new PasswordInvalidException("Os campos nova senha e confirmação de senha devem ser idênticos.");
@@ -78,5 +78,20 @@ public class UserService {
     @Transactional(readOnly = true)
     public User.Role findRoleByUsername(String username) {
         return userRepository.findRoleByUsername(username);
+    }
+
+    @Transactional
+    public void resetPassword(Long id,
+                              String newPassword,
+                              String confirmPassword) {
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new PasswordInvalidException(
+                    "Os campos nova senha e confirmação de senha devem ser idênticos.");
+        }
+
+        User user = findById(id);
+
+        user.setPassword(passwordEncoder.encode(newPassword));
     }
 }
