@@ -95,8 +95,6 @@ public class UserController {
                             schema = @Schema())),
                     @ApiResponse(responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
-                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "400", description = "Erro de validação: " +
                             "a senha atual não corresponde ou a nova senha e a confirmação não correspondem", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
