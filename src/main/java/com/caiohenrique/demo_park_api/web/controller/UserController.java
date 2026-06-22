@@ -88,7 +88,7 @@ public class UserController {
 
 
     @Operation(
-            summary = "Atualizar senha", description = "Requer autenticação via Bearer Token. Acesso permitido apenas para ADMIN e CLIENT.",
+            summary = "Atualizar a própria senha", description = "Permite que o usuário autenticado altere sua própria senha. Requer autenticação via Bearer Token.",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso", content = @Content(mediaType = "application/json",
