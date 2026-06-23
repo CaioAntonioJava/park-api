@@ -25,7 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Usuários", description = "Contém todos as operaçõe relativas aos recursos para cadastro, edição e leitura de um usuário")
+@Tag(name = "Usuários", description = "Contém todos as operações relativas aos recursos para cadastro, edição e leitura de um usuário")
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor

@@ -28,7 +28,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Clientes", description = "Contém todos as operaçõe relativas aos recursos para cadastro, edição e leitura de um cliente.")
+@Tag(name = "Clientes", description = "Contém todos as operações relativas aos recursos para cadastro, edição e leitura de um cliente.")
 @RestController
 @RequestMapping("api/v1/clients")
 @RequiredArgsConstructor
@@ -67,7 +67,7 @@ public class ClientController {
          entidade User no banco e associamos ao Client que está sendo criado.
          */
         client.setUser(userService.findById(userDetails.getId()));
-
+        
         clientService.save(client);
 
         return ResponseEntity.status(201).body(ClientMapper.clientResponseDTO(client));
