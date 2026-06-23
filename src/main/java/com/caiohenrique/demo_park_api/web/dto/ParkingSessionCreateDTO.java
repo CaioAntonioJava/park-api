@@ -15,35 +15,61 @@ import org.hibernate.validator.constraints.br.CPF;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "ParkingSessionCreateDTO", description = "Dados necessários para registrar a entrada de um veículo no estacionamento")
+@Schema(
+        name = "ParkingSessionCreateDTO",
+        description = "Dados necessários para registrar a entrada de um veículo e iniciar uma sessão de estacionamento"
+)
 public class ParkingSessionCreateDTO {
 
-    /**
-     * DTO responsável por transportar os dados do veículo
-     * e do cliente para registrar uma nova sessão de estacionamento.
-     */
 
-    @Schema(description = "Placa do veículo", example = "BRA1234")
     @NotBlank(message = "A placa é obrigatória")
     @Size(min = 7, max = 7)
     @Pattern(regexp = "^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$", message = "Placa inválida")
+    @Schema(
+            description = "Placa do veículo sem caracteres especiais no formato brasileiro",
+            example = "BRA1234",
+            pattern = "^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$",
+            minLength = 7,
+            maxLength = 7,
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private String licensePlate;
 
-    @Schema(description = "Marca do veículo", example = "Toyota")
     @NotBlank(message = "A marca é obrigatória")
+    @Schema(
+            description = "Marca do veículo",
+            example = "Toyota",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private String brand;
 
-    @Schema(description = "Modelo do veículo", example = "Corolla")
     @NotBlank(message = "O modelo é obrigatório")
+    @Schema(
+            description = "Modelo do veículo",
+            example = "Corolla",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private String model;
 
-    @Schema(description = "Cor do veículo", example = "Prata")
     @NotBlank(message = "A cor é obrigatória")
+    @Schema(
+            description = "Cor predominante do veículo",
+            example = "Prata",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private String color;
 
-    @Schema(description = "CPF do cliente previamente cadastrado", example = "12345678909")
     @NotBlank(message = "O CPF é obrigatório")
     @CPF(message = "CPF inválido")
+    @Size(min = 11, max = 11)
+    @Schema(
+            description = "CPF do cliente previamente cadastrado",
+            example = "12345678909",
+            pattern = "\\d{11}",
+            minLength = 11,
+            maxLength = 11,
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private String clientCpf;
 
 }
