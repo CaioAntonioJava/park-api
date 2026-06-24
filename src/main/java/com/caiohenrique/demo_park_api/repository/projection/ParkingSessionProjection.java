@@ -74,15 +74,7 @@ public interface ParkingSessionProjection {
             example = "A001"
     )
     String getSpotCode();
-
-
-    @Schema(
-            description = "Código da vaga retornado pelo relacionamento com a vaga de estacionamento",
-            example = "A001"
-    )
-    String getParkingSpotSpotCode();
-
-
+    
     @Schema(
             description = "Data e hora de entrada do veículo",
             example = "2026-06-23 10:30:00"
