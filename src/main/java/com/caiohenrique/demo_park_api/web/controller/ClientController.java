@@ -7,7 +7,6 @@ import com.caiohenrique.demo_park_api.service.ClientService;
 import com.caiohenrique.demo_park_api.service.UserService;
 import com.caiohenrique.demo_park_api.web.dto.ClientCreateDTO;
 import com.caiohenrique.demo_park_api.web.dto.ClientResponseDTO;
-import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import com.caiohenrique.demo_park_api.web.dto.mapper.ClientMapper;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +42,7 @@ public class ClientController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso.", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponseDTO.class))),
+                            schema = @Schema(implementation = ClientResponseDTO.class))),
                     @ApiResponse(responseCode = "409", description = "Cliente CPF já possuí cadastro no sistema.", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "422", description = "Recurso não processado por falta de dados, ou dados inválidos.", content = @Content(mediaType = "application/json",
@@ -67,7 +66,7 @@ public class ClientController {
          entidade User no banco e associamos ao Client que está sendo criado.
          */
         client.setUser(userService.findById(userDetails.getId()));
-        
+
         clientService.save(client);
 
         return ResponseEntity.status(201).body(ClientMapper.clientResponseDTO(client));
@@ -78,7 +77,7 @@ public class ClientController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso.", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponseDTO.class))),
+                            schema = @Schema(implementation = ClientResponseDTO.class))),
                     @ApiResponse(responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = @Content(mediaType = "application/json",
@@ -111,7 +110,7 @@ public class ClientController {
             },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponseDTO.class))),
+                            schema = @Schema(implementation = ClientResponseDTO.class))),
                     @ApiResponse(responseCode = "403", description = "Acesso negado: usuário não possui permissão para este recurso.", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
             }
@@ -128,7 +127,7 @@ public class ClientController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso.", content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserResponseDTO.class))),
+                            schema = @Schema(implementation = ClientResponseDTO.class))),
                     @ApiResponse(responseCode = "403", description = "Recurso não permitido ao perfil de ADMIN.", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
             }

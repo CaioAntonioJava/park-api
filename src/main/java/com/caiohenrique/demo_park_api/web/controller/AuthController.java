@@ -3,7 +3,6 @@ package com.caiohenrique.demo_park_api.web.controller;
 import com.caiohenrique.demo_park_api.jwt.JwtToken;
 import com.caiohenrique.demo_park_api.service.AuthService;
 import com.caiohenrique.demo_park_api.web.dto.UserLoginDTO;
-import com.caiohenrique.demo_park_api.web.dto.UserResponseDTO;
 import com.caiohenrique.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,8 +40,8 @@ public class AuthController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "Autenticação realizada com sucesso. Retorna um Bearer Token para acesso à API.",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = UserResponseDTO.class))),
-                    @ApiResponse(responseCode = "400", description = "Credenciais inválidas", content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = JwtToken.class))),
+                    @ApiResponse(responseCode = "401", description = "Credenciais inválidas", content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "422", description = "Erro de validação nos campos da requisição",
                             content = @Content(mediaType = "application/json",
