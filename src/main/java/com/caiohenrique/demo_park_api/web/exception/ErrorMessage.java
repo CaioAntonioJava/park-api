@@ -41,13 +41,13 @@ public class ErrorMessage {
         this.status = status.value();
         this.statusText = status.getReasonPhrase();
         this.message = message;
-        AddErrors(result);
+        addErrors(result);
     }
 
-    private void AddErrors(BindingResult result) {
+    private void addErrors(BindingResult result) {
         this.erros = new HashMap<>();
 
-        for (FieldError fieldError : result.getFieldErrors()){
+        for (FieldError fieldError : result.getFieldErrors()) {
             this.erros.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
     }
