@@ -133,7 +133,7 @@ public class ClientController {
                             schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
-    // ===== Retrieves the currently authenticated user by ID. =====
+    // Recupera o usuário autenticado atualmente pelo ID
     @GetMapping("/details")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<ClientResponseDTO> getDetails(@AuthenticationPrincipal JwtUserDetails jwtUserDetails) {
