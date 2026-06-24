@@ -21,7 +21,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorMessage> accessDeniedException(AccessDeniedException exception,
                                                               HttpServletRequest request) {
 
-        log.error("Api Error - ", exception);
+        log.error("API error: {}", exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -33,7 +33,7 @@ public class ApiExceptionHandler {
                                                                         HttpServletRequest request,
                                                                         BindingResult result) {
 
-        log.error("Api Error - ", exception);
+        log.error("API error: {}", exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -49,7 +49,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorMessage> uniqueViolationException(RuntimeException exception,
                                                                  HttpServletRequest request) {
 
-        log.error("Api Error - ", exception);
+        log.error("API error: {}", exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -60,7 +60,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException exception,
                                                                 HttpServletRequest request) {
 
-        log.error("Api Error - ", exception);
+        log.error("API error: {}", exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +71,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<ErrorMessage> passwordInvalidException(RuntimeException exception,
                                                                  HttpServletRequest request) {
 
-        log.error("Api Error - ", exception);
+        log.error("API error: {}", exception.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -83,12 +83,12 @@ public class ApiExceptionHandler {
      * Retorna 400 com o valor recebido e os valores permitidos.
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorMessage> handleInvalidEnum(HttpMessageNotReadableException ex,
+    public ResponseEntity<ErrorMessage> handleInvalidEnum(HttpMessageNotReadableException exception,
                                                           HttpServletRequest request) {
 
-        log.error("Api Error - ", ex);
+        log.error("API error: {}", exception.getMessage(), exception);
 
-        Throwable cause = ex.getCause();
+        Throwable cause = exception.getCause();
 
         String message = "Erro na requisição.";
 
@@ -104,5 +104,25 @@ public class ApiExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, message));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorMessage> internalServerError(
+            Exception exception,
+            HttpServletRequest request
+    ) {
+
+        log.error("API error: {}", exception.getMessage(), exception);
+
+        ErrorMessage error = new ErrorMessage(
+                request,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Erro interno no servidor. Tente novamente mais tarde."
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(error);
     }
 }
