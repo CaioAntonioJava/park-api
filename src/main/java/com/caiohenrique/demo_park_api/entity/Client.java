@@ -40,11 +40,11 @@ public class Client extends Auditable implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return Objects.equals(id, client.id);
+        return Objects.equals(cpf, client.cpf);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(cpf);
     }
 }

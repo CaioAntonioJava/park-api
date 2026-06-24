@@ -33,16 +33,16 @@ public class ParkingSpot extends Auditable implements Serializable {
     @Column(name = "spot_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private SpotStatus spotStatus;
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ParkingSpot that = (ParkingSpot) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(spotCode, that.spotCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(spotCode);
     }
 }
