@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Clientes", description = "Contém todos as operações relativas aos recursos para cadastro, edição e leitura de um cliente.")
 @RestController
-@RequestMapping("api/v1/clients")
+@RequestMapping("/api/v1/clients")
 @RequiredArgsConstructor
 public class ClientController {
 

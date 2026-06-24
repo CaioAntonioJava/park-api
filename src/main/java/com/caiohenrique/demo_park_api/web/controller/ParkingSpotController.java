@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Vagas", description = "Contém os recursos para cadastro e leitura de uma vaga.")
 @RestController
-@RequestMapping("api/v1/parking-spots")
+@RequestMapping("/api/v1/parking-spots")
 @RequiredArgsConstructor
 public class ParkingSpotController {
     private final ParkingSpotService parkingSpotService;

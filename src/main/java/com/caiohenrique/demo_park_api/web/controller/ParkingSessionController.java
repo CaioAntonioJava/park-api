@@ -36,7 +36,7 @@ import java.net.URI;
 @Tag(name = "Sessões de Estacionamento", description = "Operações de entrada e saída de veículos no estacionamento")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/parking-sessions")
+@RequestMapping("/api/v1/parking-sessions")
 public class ParkingSessionController {
 
     private final ParkingLotService parkingLotService;
