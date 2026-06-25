@@ -2,7 +2,6 @@ package com.caiohenrique.demo_park_api.entity;
 
 import com.caiohenrique.demo_park_api.enums.SpotStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "parking_spots")
 @EntityListeners(AuditingEntityListener.class)
