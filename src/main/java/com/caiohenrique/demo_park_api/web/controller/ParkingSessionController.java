@@ -102,7 +102,7 @@ public class ParkingSessionController {
             }
     )
     @GetMapping("/{receipt}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ParkingSessionResponseDTO> getOpenSessionByReceipt(@PathVariable String receipt) {
 
         ParkingSession openSession = parkingSessionService.findOpenSessionByReceipt(receipt);
