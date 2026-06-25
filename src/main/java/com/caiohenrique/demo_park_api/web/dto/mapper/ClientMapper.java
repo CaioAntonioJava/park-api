@@ -9,11 +9,16 @@ import org.modelmapper.ModelMapper;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClientMapper {
+
+    // Instância única e compartilhada: a criação de ModelMapper é custosa
+    // (faz scanning/reflection), então não deve ser refeita a cada requisição.
+    private static final ModelMapper MAPPER = new ModelMapper();
+
     public static Client toClient(ClientCreateDTO clientCreateDTO) {
-        return new ModelMapper().map(clientCreateDTO, Client.class);
+        return MAPPER.map(clientCreateDTO, Client.class);
     }
 
     public static ClientResponseDTO clientResponseDTO(Client client) {
-        return new ModelMapper().map(client, ClientResponseDTO.class);
+        return MAPPER.map(client, ClientResponseDTO.class);
     }
 }

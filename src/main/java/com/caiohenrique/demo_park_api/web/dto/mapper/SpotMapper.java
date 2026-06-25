@@ -9,11 +9,16 @@ import org.modelmapper.ModelMapper;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SpotMapper {
+
+    // Instância única e compartilhada: a criação de ModelMapper é custosa
+    // (faz scanning/reflection), então não deve ser refeita a cada requisição.
+    private static final ModelMapper MAPPER = new ModelMapper();
+
     public static ParkingSpot parkingSpot(ParkingSpotCreateDTO parkingSpotCreateDTO) {
-        return new ModelMapper().map(parkingSpotCreateDTO, ParkingSpot.class);
+        return MAPPER.map(parkingSpotCreateDTO, ParkingSpot.class);
     }
 
     public static ParkingSpotResponseDTO parkingSpotResponseDTO(ParkingSpot parkingSpot) {
-        return new ModelMapper().map(parkingSpot, ParkingSpotResponseDTO.class);
+        return MAPPER.map(parkingSpot, ParkingSpotResponseDTO.class);
     }
 }
