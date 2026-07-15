@@ -1,219 +1,297 @@
-📌 *Este projeto foi desenvolvido com foco em organização, segurança, escalabilidade e boas práticas de APIs REST.
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17-%23ED8B00?style=flat&logo=java&logoColor=white" alt="Java 17"/>
+  <img src="https://img.shields.io/badge/Spring_Boot-3.1.0-%236DB33F?style=flat&logo=springboot&logoColor=white" alt="Spring Boot 3.1"/>
+  <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Passing"/>
+  <img src="https://img.shields.io/badge/tests-228-blue" alt="228 Tests"/>
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License MIT"/>
+</p>
 
-# 🚗 Sistema de Gerenciamento de Estacionamento (API REST)
+# 🅿️ Park API — Sistema de Gerenciamento de Estacionamento
 
-## 📌 Visão Geral
+API REST para gerenciamento de estacionamentos com controle de **usuários**, **clientes**, **vagas** e fluxo completo de **check-in/check-out** de veículos, incluindo cálculo de tarifas e descontos.
 
-Este projeto consiste no desenvolvimento de uma **API REST** para gerenciamento de estacionamentos, contemplando controle de usuários, clientes, vagas e fluxo
-de entrada e saída de veículos. A aplicação utiliza **autenticação via JSON Web Token (JWT)** e segue boas práticas de segurança, auditoria e documentação de
-APIs.
-
-O sistema foi especificado a partir de um levantamento de requisitos junto ao cliente e tem como objetivo servir como **back-end** para consumo por aplicações
-front-end.
-
----
-
-## 🛠️ Tecnologias e Padrões
-
-* API REST
-* Autenticação com **JWT (JSON Web Token)**
-* Auditoria de dados (criação e atualização)
-* Documentação dos endpoints (Swagger/OpenAPI ou equivalente)
+> Projeto de estudo desenvolvido com foco em organização, segurança, escalabilidade e boas práticas de APIs REST.
 
 ---
 
-## ⚙️ Configurações Gerais
+## ✨ Funcionalidades
 
-* Timezone configurado conforme o país
-* Locale configurado conforme o país
-* Sistema de auditoria com:
-
-    * Data de criação
-    * Data da última modificação
-    * Usuário responsável pela criação
-    * Usuário responsável pela última alteração
-* Banco de dados configurado para ambiente de desenvolvimento
+- ✅ Cadastro e autenticação de usuários com **JWT**
+- ✅ Perfis de acesso: **ADMIN** e **CLIENT**
+- ✅ Cadastro de clientes vinculados a usuários
+- ✅ Gerenciamento de vagas (LIVRE / OCUPADA)
+- ✅ Check-in com geração automática de recibo
+- ✅ Check-out com cálculo de tarifa por tempo
+- ✅ Política de desconto progressivo (30% a cada 10 sessões)
+- ✅ Auditoria completa (criação/atualização por usuário)
+- ✅ Documentação interativa via **Swagger/OpenAPI**
+- ✅ **228 testes** automatizados (unitários + integração)
 
 ---
 
-## 👤 Módulo de Usuários
+## 🛠️ Stack Tecnológica
 
-### Funcionalidades
+| Tecnologia | Versão | Propósito |
+|---|---|---|
+| Java | 17 | Linguagem principal |
+| Spring Boot | 3.1.0 | Framework web |
+| Spring Security | 6.x | Autenticação e autorização |
+| Spring Data JPA | 3.1.0 | Persistência e repositories |
+| Hibernate | 6.x | ORM |
+| JWT (jjwt) | 0.13.0 | Tokens de autenticação |
+| MySQL | 8.0+ | Banco de dados (produção) |
+| H2 | — | Banco de dados (testes) |
+| ModelMapper | 3.2.4 | Mapeamento DTO ↔ Entity |
+| Lombok | 1.18.46 | Redução de boilerplate |
+| Swagger (springdoc) | 2.2.0 | Documentação OpenAPI |
+| JUnit 5 + Mockito | — | Testes unitários e integração |
+| Maven | 3.8+ | Gerenciamento de dependências |
 
-* Cadastro de usuário sem autenticação prévia
-* E-mail utilizado como **username** (único)
-* Senha com no mínimo **6 caracteres**
-* Perfis disponíveis:
+---
 
-    * **ADMIN**
-    * **CLIENTE**
+## 📋 Pré-requisitos
 
-### Regras de Acesso
+- **Java 17** (ou superior)
+- **Maven 3.8+**
+- **MySQL 8.0+** (para execução com perfil `dev`)
+- Git
 
-* Administrador pode:
+---
 
-    * Recuperar qualquer usuário por ID
-    * Listar todos os usuários
-* Cliente pode:
+## 🚀 Como Executar
 
-    * Recuperar apenas seus próprios dados
-    * Alterar sua própria senha (quando autenticado)
+### 1. Clone o repositório
 
-### Qualidade
+```bash
+git clone https://github.com/CaioAntonioJava/park-api.git
+cd park-api
+```
 
-* Todos os recursos documentados
+### 2. Configure o banco de dados (MySQL)
+
+Crie um banco de dados MySQL:
+
+```sql
+CREATE DATABASE park_api;
+```
+
+Edite o arquivo `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/park_api?useTimezone=true&serverTimezone=America/Sao_Paulo
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+```
+
+### 3. Execute a aplicação
+
+```bash
+./mvnw spring-boot:run
+```
+
+A aplicação iniciará em `http://localhost:8080`.
+
+### 4. Executar com perfil de teste (H2)
+
+```bash
+./mvnw test
+```
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── main/
+│   ├── java/com/caiohenrique/demo_park_api/
+│   │   ├── config/              # Configurações (Security, JPA, Swagger, Timezone)
+│   │   ├── entity/              # Entidades JPA (User, Client, ParkingSpot, ParkingSession)
+│   │   ├── enums/               # Enums (SpotStatus)
+│   │   ├── exception/           # Exceções customizadas
+│   │   ├── jwt/                 # Utilitários e filtros JWT
+│   │   ├── parking/             # Lógica de negócio (tarifas, descontos, recibos)
+│   │   ├── repository/          # Repositórios JPA
+│   │   │   └── projection/      # Projeções para consultas
+│   │   ├── service/             # Camada de serviços
+│   │   └── web/
+│   │       ├── controller/      # Controllers REST
+│   │       ├── dto/             # DTOs de requisição/resposta
+│   │       │   └── mapper/      # Mappers DTO ↔ Entity
+│   │       └── exception/       # Handler global de exceções
+│   └── resources/
+│       ├── application.properties       # Configuração (MySQL)
+│       └── application-test.properties  # Configuração de teste (H2)
+└── test/
+    └── java/com/caiohenrique/demo_park_api/
+        ├── jwt/                 # Testes JWT
+        ├── parking/             # Testes de lógica de domínio
+        ├── repository/          # Testes de integração com BD
+        ├── service/             # Testes de serviços
+        └── web/
+            ├── controller/      # Testes de controllers REST
+            ├── dto/mapper/      # Testes de mappers
+            └── exception/       # Testes do handler de exceções
+```
 
 ---
 
 ## 🔐 Autenticação
 
-* Sistema de autenticação baseado em **JWT**
-* Endpoint dedicado para login/autenticação
-* Token necessário para acesso aos recursos protegidos
+A API utiliza **JWT (JSON Web Token)** para autenticação. O token tem validade de **30 minutos** e deve ser enviado no header `Authorization` no formato `Bearer <token>`.
+
+### Obter token
+
+```bash
+curl -X POST http://localhost:8080/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "admin@email.com.br",
+    "password": "123456"
+  }'
+```
+
+**Resposta:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+### Usar token nas requisições
+
+```bash
+curl -X GET http://localhost:8080/api/v1/users \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9..."
+```
 
 ---
 
-## 🧑‍💼 Módulo de Clientes
+## 📡 API Endpoints
 
-### Regras Gerais
+### 👤 Usuários (`/api/v1/users`)
 
-* O cadastro de cliente só é permitido após o cadastro do usuário
-* Um usuário pode possuir **apenas um cliente**
-* Um cliente está vinculado a **um único usuário**
+| Método | Path | Auth | Role | Descrição |
+|---|---|---|---|---|
+| `POST` | `/api/v1/users` | ❌ | Público | Criar novo usuário |
+| `GET` | `/api/v1/users/{id}` | ✅ | ADMIN ou CLIENT (próprio) | Buscar usuário por ID |
+| `GET` | `/api/v1/users` | ✅ | ADMIN | Listar todos os usuários |
+| `PATCH` | `/api/v1/users/{id}/password` | ✅ | CLIENT (próprio) | Alterar própria senha |
+| `PATCH` | `/api/v1/users/{id}/reset-password` | ✅ | ADMIN | Redefinir senha de um usuário |
 
-### Dados do Cliente
+### 🔑 Autenticação (`/api/v1/auth`)
 
-* Nome completo
-* CPF (único)
-* Vínculo com o usuário
+| Método | Path | Auth | Role | Descrição |
+|---|---|---|---|---|
+| `POST` | `/api/v1/auth/login` | ❌ | Público | Autenticar e obter token JWT |
 
-### Permissões
+### 🧑‍💼 Clientes (`/api/v1/clients`)
 
-* Cliente autenticado pode:
+| Método | Path | Auth | Role | Descrição |
+|---|---|---|---|---|
+| `POST` | `/api/v1/clients` | ✅ | CLIENT | Criar novo cliente |
+| `GET` | `/api/v1/clients/{id}` | ✅ | ADMIN | Buscar cliente por ID |
+| `GET` | `/api/v1/clients` | ✅ | ADMIN | Listar todos os clientes |
+| `GET` | `/api/v1/clients/details` | ✅ | CLIENT | Buscar dados do próprio cliente |
 
-    * Consultar seus próprios dados
-* Administrador autenticado pode:
+### 🅿️ Vagas (`/api/v1/parking-spots`)
 
-    * Listar todos os clientes
-    * Localizar cliente por ID
+| Método | Path | Auth | Role | Descrição |
+|---|---|---|---|---|
+| `POST` | `/api/v1/parking-spots` | ✅ | ADMIN | Criar nova vaga |
+| `GET` | `/api/v1/parking-spots/{spotCode}` | ✅ | ADMIN | Buscar vaga por código |
+| `GET` | `/api/v1/parking-spots` | ✅ | ADMIN | Listar todas as vagas |
 
-### Qualidade
+### 🚘 Sessões de Estacionamento (`/api/v1/parking-sessions`)
 
-* Recursos totalmente documentados
-
----
-
-## 🅿️ Módulo de Vagas
-
-### Regras
-
-* Todas as ações exigem autenticação
-* Acesso restrito ao **administrador**
-
-### Dados da Vaga
-
-* Código único (diferente do ID)
-* Status:
-
-    * Livre
-    * Ocupada
-
-### Funcionalidades
-
-* Localizar vaga pelo código
-
-### Qualidade
-
-* Endpoints documentados
+| Método | Path | Auth | Role | Descrição |
+|---|---|---|---|---|
+| `POST` | `/api/v1/parking-sessions/check-in` | ✅ | ADMIN | Registrar entrada de veículo |
+| `GET` | `/api/v1/parking-sessions/{receipt}` | ✅ | ADMIN | Buscar sessão por recibo |
+| `PUT` | `/api/v1/parking-sessions/check-out/{receipt}` | ✅ | ADMIN | Registrar saída de veículo |
+| `GET` | `/api/v1/parking-sessions/cpf/{cpf}` | ✅ | ADMIN | Histórico por CPF |
+| `GET` | `/api/v1/parking-sessions` | ✅ | CLIENT | Histórico do próprio cliente |
 
 ---
 
-## 🚘 Módulo de Estacionamento
+## 💰 Regras de Negócio
 
-Responsável por controlar **entradas e saídas de veículos**.
+### Cálculo de Tarifas
 
-### Regras de Negócio
-
-* Apenas clientes cadastrados podem estacionar
-* Cliente deve informar o **CPF** para estacionar
-* Uma vaga pode receber vários veículos ao longo do tempo, mas **nunca simultaneamente**
-
-### Check-in (Administrador)
-
-Armazena:
-
-* Placa do veículo
-* Marca
-* Modelo
-* Cor
-* Data/hora de entrada
-* CPF do cliente
-* Vaga vinculada
-
-Gera automaticamente um **número de recibo único**.
-
-### Check-out (Administrador)
-
-Armazena:
-
-* Data/hora de saída
-* Valor total do período
-* Valor do desconto (quando aplicável)
-
-O cliente deve informar o **número do recibo** para retirada do veículo.
-
----
-
-## 💰 Regras de Cálculo de Tarifas
-
-| Período         | Valor                                      |
-|-----------------|--------------------------------------------|
-| Até 15 minutos  | R$ 5,00                                    |
-| Até 60 minutos  | R$ 9,25                                    |
+| Período | Valor |
+|---|---|
+| Até 15 minutos | R$ 5,00 |
+| Até 60 minutos | R$ 9,25 |
 | Após 60 minutos | R$ 9,25 + R$ 1,75 a cada 15 min adicionais |
 
-### Exemplos
+**Exemplos:**
 
-* 13:00 → 13:15 → **R$ 5,00**
-* 13:00 → 14:00 → **R$ 9,25**
-* 13:00 → 14:30 → **R$ 12,75**
-* 13:00 → 15:00 → **R$ 16,25**
-* 13:00 → 15:10 → **R$ 18,00**
+- 13:00 → 13:15 → **R$ 5,00**
+- 13:00 → 14:00 → **R$ 9,25**
+- 13:00 → 14:30 → **R$ 12,75**
+- 13:00 → 15:00 → **R$ 16,25**
+- 13:00 → 15:10 → **R$ 18,00**
 
----
+### Política de Desconto
 
-## 🎁 Política de Desconto
-
-* A cada **10 estacionamentos completos** (entrada + saída), o cliente recebe:
-
-    * **30% de desconto** no próximo estacionamento concluído
+A cada **10 estacionamentos completos** (entrada + saída), o cliente recebe **30% de desconto** no próximo estacionamento concluído.
 
 ---
 
-## 📄 Relatórios
+## 🧪 Testes
 
-* Cliente pode gerar um **relatório em PDF** contendo o histórico de seus estacionamentos
+O projeto conta com **228 testes automatizados** entre unitários e de integração.
+
+### Executar todos os testes
+
+```bash
+./mvnw test
+```
+
+### Cobertura por camada
+
+| Camada | Quantidade |
+|---|---|
+| Lógica de domínio (tarifas, descontos, recibos) | 48 testes |
+| Serviços | 48 testes |
+| JWT (utils, filtros, user details) | 27 testes |
+| Mappers DTO ↔ Entity | 11 testes |
+| Repositórios (integração com H2) | 28 testes |
+| Controllers REST (integração) | 55 testes |
+| Exception handler | 11 testes |
+| **Total** | **228 testes** |
+
+---
+
+## 📖 Documentação
+
+A documentação interativa da API (Swagger/OpenAPI) está disponível em:
+
+```
+http://localhost:8080/docs-park.html
+```
 
 ---
 
-## 📚 Documentação
+## 🤝 Contribuição
 
-* Todos os endpoints da API são documentados
-* Documentação pensada para facilitar o consumo pelo front-end
+Contribuições são bem-vindas! Siga os passos:
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas alterações (`git commit -m 'feat: adiciona nova feature'`)
+4. Faça push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
-## 📦 Versão
-
-* **Demanda – Versão 1**
-
----
-
-## 👥 Público-Alvo
-
-* Desenvolvedores back-end
-* Desenvolvedores front-end
-* Avaliadores técnicos
-* Equipes de QA
-
----
+<p align="center">
+  Desenvolvido por <a href="https://github.com/CaioAntonioJava">CaioAntonioJava</a>
+</p>
