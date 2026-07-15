@@ -15,6 +15,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class JwtAuthorizationFilterTest {
 
+    private static final String TEST_SECRET_KEY = "n8Fv3KxPz7LmQ2rT9wYs6HdJ4uBc1EaZ";
+
     @Mock
     private JwtUserDetailsService userDetailsService;
 
@@ -28,10 +30,12 @@ class JwtAuthorizationFilterTest {
     private FilterChain filterChain;
 
     private JwtAuthorizationFilter filter;
+    private JwtUtils jwtUtils;
 
     @BeforeEach
     void setUp() {
-        filter = new JwtAuthorizationFilter(userDetailsService);
+        jwtUtils = new JwtUtils(TEST_SECRET_KEY, 0, 0, 30);
+        filter = new JwtAuthorizationFilter(userDetailsService, jwtUtils);
     }
 
     @Test
@@ -75,7 +79,7 @@ class JwtAuthorizationFilterTest {
 
     @Test
     void doFilterInternal_withValidToken_shouldAuthenticate() throws Exception {
-        JwtToken validJwt = JwtUtils.createToken("user@email.com.br", "CLIENT");
+        JwtToken validJwt = jwtUtils.createToken("user@email.com.br", "CLIENT");
         String tokenWithBearer = "Bearer " + validJwt.token();
 
         when(request.getHeader(JwtUtils.JWT_AUTHORIZATION)).thenReturn(tokenWithBearer);
@@ -91,7 +95,7 @@ class JwtAuthorizationFilterTest {
 
     @Test
     void doFilterInternal_withValidAdminToken_shouldAuthenticate() throws Exception {
-        JwtToken validJwt = JwtUtils.createToken("admin@email.com.br", "ADMIN");
+        JwtToken validJwt = jwtUtils.createToken("admin@email.com.br", "ADMIN");
         String tokenWithBearer = "Bearer " + validJwt.token();
 
         when(request.getHeader(JwtUtils.JWT_AUTHORIZATION)).thenReturn(tokenWithBearer);

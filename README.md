@@ -67,21 +67,27 @@ git clone https://github.com/CaioAntonioJava/park-api.git
 cd park-api
 ```
 
-### 2. Configure o banco de dados (MySQL)
+### 2. Configure o ambiente
 
-Crie um banco de dados MySQL:
+Copie o arquivo de exemplo e preencha suas credenciais:
 
-```sql
-CREATE DATABASE park_api;
+```bash
+cp .env.example .env
 ```
 
-Edite o arquivo `src/main/resources/application.properties`:
+Edite o arquivo `.env` com suas configurações:
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/park_api?useTimezone=true&serverTimezone=America/Sao_Paulo
-spring.datasource.username=seu_usuario
-spring.datasource.password=sua_senha
+```env
+# MySQL Database
+DB_URL=jdbc:mysql://localhost:3306/park_api?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
+DB_USERNAME=root
+DB_PASSWORD=sua_senha_aqui
+
+# JWT Secret Key (mínimo 32 caracteres para HS256)
+JWT_SECRET_KEY=sua-chave-secreta-jwt-com-pelo-menos-32-caracteres
 ```
+
+> ⚠️ **Importante:** O arquivo `.env` contém credenciais sensíveis e está no `.gitignore`. **Nunca** commite este arquivo.
 
 ### 3. Execute a aplicação
 
@@ -97,41 +103,49 @@ A aplicação iniciará em `http://localhost:8080`.
 ./mvnw test
 ```
 
+Os testes utilizam o perfil `test` com banco H2 em memória e uma chave JWT fixa definida em `application-test.properties`.
+
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```
-src/
-├── main/
-│   ├── java/com/caiohenrique/demo_park_api/
-│   │   ├── config/              # Configurações (Security, JPA, Swagger, Timezone)
-│   │   ├── entity/              # Entidades JPA (User, Client, ParkingSpot, ParkingSession)
-│   │   ├── enums/               # Enums (SpotStatus)
-│   │   ├── exception/           # Exceções customizadas
-│   │   ├── jwt/                 # Utilitários e filtros JWT
-│   │   ├── parking/             # Lógica de negócio (tarifas, descontos, recibos)
-│   │   ├── repository/          # Repositórios JPA
-│   │   │   └── projection/      # Projeções para consultas
-│   │   ├── service/             # Camada de serviços
-│   │   └── web/
-│   │       ├── controller/      # Controllers REST
-│   │       ├── dto/             # DTOs de requisição/resposta
-│   │       │   └── mapper/      # Mappers DTO ↔ Entity
-│   │       └── exception/       # Handler global de exceções
-│   └── resources/
-│       ├── application.properties       # Configuração (MySQL)
-│       └── application-test.properties  # Configuração de teste (H2)
-└── test/
-    └── java/com/caiohenrique/demo_park_api/
-        ├── jwt/                 # Testes JWT
-        ├── parking/             # Testes de lógica de domínio
-        ├── repository/          # Testes de integração com BD
-        ├── service/             # Testes de serviços
-        └── web/
-            ├── controller/      # Testes de controllers REST
-            ├── dto/mapper/      # Testes de mappers
-            └── exception/       # Testes do handler de exceções
+📦 demo-park-api
+├── .env.example                  # Template de variáveis de ambiente
+├── .gitignore
+├── pom.xml
+├── mvnw
+├── mvnw.cmd
+└── src/
+    ├── main/
+    │   ├── java/com/caiohenrique/demo_park_api/
+    │   │   ├── config/              # Configurações (Security, JPA, Swagger, Timezone)
+    │   │   ├── entity/              # Entidades JPA (User, Client, ParkingSpot, ParkingSession)
+    │   │   ├── enums/               # Enums (SpotStatus)
+    │   │   ├── exception/           # Exceções customizadas
+    │   │   ├── jwt/                 # Utilitários e filtros JWT
+    │   │   ├── parking/             # Lógica de negócio (tarifas, descontos, recibos)
+    │   │   ├── repository/          # Repositórios JPA
+    │   │   │   └── projection/      # Projeções para consultas
+    │   │   ├── service/             # Camada de serviços
+    │   │   └── web/
+    │   │       ├── controller/      # Controllers REST
+    │   │       ├── dto/             # DTOs de requisição/resposta
+    │   │       │   └── mapper/      # Mappers DTO ↔ Entity
+    │   │       └── exception/       # Handler global de exceções
+    │   └── resources/
+    │       ├── application.properties       # Configuração (MySQL)
+    │       └── application-test.properties  # Configuração de teste (H2)
+    └── test/
+        └── java/com/caiohenrique/demo_park_api/
+            ├── jwt/                 # Testes JWT
+            ├── parking/             # Testes de lógica de domínio
+            ├── repository/          # Testes de integração com BD
+            ├── service/             # Testes de serviços
+            └── web/
+                ├── controller/      # Testes de controllers REST
+                ├── dto/mapper/      # Testes de mappers
+                └── exception/       # Testes do handler de exceções
 ```
 
 ---

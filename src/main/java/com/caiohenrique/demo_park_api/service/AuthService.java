@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
+    private final JwtUtils jwtUtils;
+
     public JwtToken authenticate(Authentication authentication) {
 
         JwtUserDetails userDetails =
@@ -18,7 +20,7 @@ public class AuthService {
 
         String role = userDetails.getRole().replace("ROLE_", "");
 
-        return JwtUtils.createToken(
+        return jwtUtils.createToken(
                 userDetails.getUsername(),
                 role
         );

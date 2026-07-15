@@ -45,6 +45,9 @@ class ParkingSpotControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     private String adminToken;
     private String clientToken;
 
@@ -58,14 +61,14 @@ class ParkingSpotControllerTest {
         admin.setPassword(passwordEncoder.encode("admin123"));
         admin.setRole(User.Role.ROLE_ADMIN);
         userRepository.save(admin);
-        adminToken = JwtUtils.createToken("admin@test.com", "ADMIN").token();
+        adminToken = jwtUtils.createToken("admin@test.com", "ADMIN").token();
 
         User client = new User();
         client.setUsername("client@test.com");
         client.setPassword(passwordEncoder.encode("client123"));
         client.setRole(User.Role.ROLE_CLIENT);
         userRepository.save(client);
-        clientToken = JwtUtils.createToken("client@test.com", "CLIENT").token();
+        clientToken = jwtUtils.createToken("client@test.com", "CLIENT").token();
     }
 
     @Test

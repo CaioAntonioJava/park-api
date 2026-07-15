@@ -44,6 +44,9 @@ class ClientControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     private String adminToken;
     private String clientToken;
     private Long adminUserId;
@@ -61,7 +64,7 @@ class ClientControllerTest {
         admin.setRole(User.Role.ROLE_ADMIN);
         admin = userRepository.save(admin);
         adminUserId = admin.getId();
-        adminToken = JwtUtils.createToken("admin@test.com", "ADMIN").token();
+        adminToken = jwtUtils.createToken("admin@test.com", "ADMIN").token();
 
         // Create client user
         User clientUser = new User();
@@ -70,7 +73,7 @@ class ClientControllerTest {
         clientUser.setRole(User.Role.ROLE_CLIENT);
         clientUser = userRepository.save(clientUser);
         clientUserId = clientUser.getId();
-        clientToken = JwtUtils.createToken("client@test.com", "CLIENT").token();
+        clientToken = jwtUtils.createToken("client@test.com", "CLIENT").token();
     }
 
     @Test

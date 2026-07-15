@@ -55,6 +55,9 @@ class ParkingSessionControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     private String adminToken;
     private String clientToken;
     private Long clientUserId;
@@ -74,7 +77,7 @@ class ParkingSessionControllerTest {
         admin.setPassword(passwordEncoder.encode("admin123"));
         admin.setRole(User.Role.ROLE_ADMIN);
         userRepository.save(admin);
-        adminToken = JwtUtils.createToken("admin@test.com", "ADMIN").token();
+        adminToken = jwtUtils.createToken("admin@test.com", "ADMIN").token();
 
         // Client user
         User clientUser = new User();
@@ -83,7 +86,7 @@ class ParkingSessionControllerTest {
         clientUser.setRole(User.Role.ROLE_CLIENT);
         clientUser = userRepository.save(clientUser);
         clientUserId = clientUser.getId();
-        clientToken = JwtUtils.createToken("client@test.com", "CLIENT").token();
+        clientToken = jwtUtils.createToken("client@test.com", "CLIENT").token();
 
         // Client entity
         client = new Client();

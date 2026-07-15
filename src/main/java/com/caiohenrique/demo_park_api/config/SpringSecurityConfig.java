@@ -3,6 +3,7 @@ package com.caiohenrique.demo_park_api.config;
 import com.caiohenrique.demo_park_api.jwt.JwtAuthenticationEntryPoint;
 import com.caiohenrique.demo_park_api.jwt.JwtAuthorizationFilter;
 import com.caiohenrique.demo_park_api.jwt.JwtUserDetailsService;
+import com.caiohenrique.demo_park_api.jwt.JwtUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -41,8 +42,8 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter(JwtUserDetailsService service) {
-        return new JwtAuthorizationFilter(service);
+    public JwtAuthorizationFilter jwtAuthorizationFilter(JwtUserDetailsService service, JwtUtils jwtUtils) {
+        return new JwtAuthorizationFilter(service, jwtUtils);
     }
 
     @Bean

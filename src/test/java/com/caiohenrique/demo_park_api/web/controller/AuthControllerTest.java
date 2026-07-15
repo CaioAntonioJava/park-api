@@ -1,7 +1,6 @@
 package com.caiohenrique.demo_park_api.web.controller;
 
 import com.caiohenrique.demo_park_api.entity.User;
-import com.caiohenrique.demo_park_api.jwt.JwtUtils;
 import com.caiohenrique.demo_park_api.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
