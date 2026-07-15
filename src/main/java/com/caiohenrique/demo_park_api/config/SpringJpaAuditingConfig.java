@@ -28,6 +28,6 @@ public class SpringJpaAuditingConfig implements AuditorAware<String> {
             return Optional.empty();
         }
 
-        return Optional.of(authentication.getName());
+        return Optional.ofNullable(authentication.getName());
     }
 }
