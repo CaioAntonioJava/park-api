@@ -35,3 +35,7 @@ build/
 ### Environment ###
 .env
 ".zcode/"  
+
+### Postman (local) ###
+*.postman_collection.json
+*.postman_environment.json
